@@ -36,10 +36,9 @@ export default function Home() {
             <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/35 uppercase mb-3">
               SS 2026
             </p>
-            {/* Mobile: text-2xl / Desktop: scales with viewport */}
-            <h1 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-[clamp(2.5rem,9vw,8rem)]">
-              <span className="block">Ren</span>
-              <span className="block">Kitagawa</span>
+            {/* 1行で表示 — whitespace-nowrap で改行なし */}
+            <h1 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-[clamp(2.5rem,9vw,8rem)] whitespace-nowrap">
+              REN KITAGAWA
             </h1>
           </div>
 
@@ -49,24 +48,30 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 2. Collection ────────────────────────────── */}
+        {/* ── 2. Concept ───────────────────────────────── */}
+        <section className="px-6 md:px-12 py-28 md:py-48">
+          <div className="max-w-lg">
+            <p className="font-body font-light text-[11px] md:text-xs tracking-[0.22em] text-white/70 leading-[2.8] uppercase">
+              Clothing built from silence.<br />
+              Tension held in fabric.<br />
+              Noise placed with intention.
+            </p>
+          </div>
+        </section>
+
+        {/* ── Divider ──────────────────────────────────── */}
+        <div className="px-6 md:px-12">
+          <div className="h-px bg-white/8" />
+        </div>
+
+        {/* ── 3. Collection ────────────────────────────── */}
         <section id="collection" className="px-6 md:px-12 py-20 md:py-36">
 
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 md:mb-16">
-            <div>
-              <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/25 uppercase mb-3">
-                Upcoming
-              </p>
-              <h2 className="font-heading text-xl md:text-[clamp(1.5rem,5vw,4rem)] leading-[0.88] uppercase tracking-[-0.01em]">
-                SS 2026
-              </h2>
-            </div>
-            <p className="font-body font-light text-[9px] tracking-[0.2em] text-white/25 uppercase leading-[2.2] md:text-right">
-              Collection Preview<br />
-              June 2026<br />
-              Tokyo — Paris
-            </p>
+          {/* Header — SS 2026 のみ */}
+          <div className="mb-10 md:mb-16">
+            <h2 className="font-heading text-[10px] tracking-[0.5em] uppercase text-white/40">
+              SS 2026
+            </h2>
           </div>
 
           {/* 2-column portrait grid */}
