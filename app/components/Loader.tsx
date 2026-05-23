@@ -1,14 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 
 export default function Loader() {
   const [hidden, setHidden] = useState(false);
-  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
-    // Hide from DOM after animation completes (2.2s)
     const t = setTimeout(() => setHidden(true), 2200);
     return () => clearTimeout(t);
   }, []);
@@ -17,40 +14,29 @@ export default function Loader() {
 
   return (
     <div
-      className="loader-fadeout fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center pointer-events-none"
+      className="loader-fadeout fixed inset-0 z-[200] flex flex-col items-center justify-center pointer-events-none"
+      style={{ backgroundColor: "#0a0a0a" }}
       aria-hidden="true"
     >
-      {/* Dot-noise background */}
+      {/* Dot-noise background — 8% opacity */}
       <div
         className="absolute inset-0"
         style={{
+          opacity: 0.08,
           backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",
+            "radial-gradient(rgba(255,255,255,1) 1px, transparent 1px)",
           backgroundSize: "3px 3px",
         }}
       />
 
-      {/* Centered content */}
+      {/* Content */}
       <div className="relative flex flex-col items-center gap-5">
-        <div className="animate-pulse flex items-center justify-center" style={{ width: 200, minHeight: 48 }}>
-          {!imgError ? (
-            <Image
-              src="/images/logo.png"
-              alt="REN KITAGAWA"
-              width={200}
-              height={80}
-              style={{ objectFit: "contain", width: 200, height: "auto" }}
-              priority
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            // Fallback text when logo.png is not found
-            <p className="font-heading text-[clamp(1.2rem,6vw,2.8rem)] tracking-[0.2em] uppercase text-white">
-              REN KITAGAWA
-            </p>
-          )}
-        </div>
-        <p className="font-body font-light text-[10px] tracking-[0.55em] text-white/35 uppercase">
+        <p
+          className="font-heading text-[clamp(1.2rem,6vw,3rem)] tracking-[0.3em] uppercase text-white animate-pulse"
+        >
+          REN KITAGAWA
+        </p>
+        <p className="font-body font-light text-[9px] tracking-[0.55em] text-white/60 uppercase">
           CALCULATED SILENCE.
         </p>
       </div>
