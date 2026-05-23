@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Cormorant, Space_Grotesk } from "next/font/google";
+import { Archivo_Black, Inter } from "next/font/google";
 import "./globals.css";
 
-const cormorant = Cormorant({
-  variable: "--font-cormorant",
+const archivoBlack = Archivo_Black({
+  variable: "--font-archivo-black",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: "400",
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["300", "400"],
   display: "swap",
 });
 
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${cormorant.variable} ${spaceGrotesk.variable} h-full`}
+      className={`${archivoBlack.variable} ${inter.variable} h-full`}
     >
       <body className="min-h-full bg-black text-white antialiased">
         {children}

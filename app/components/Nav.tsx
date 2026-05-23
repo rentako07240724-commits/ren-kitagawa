@@ -25,7 +25,7 @@ export default function Nav() {
       <div className="flex items-center justify-between px-6 md:px-12 py-6 md:py-8">
         <a
           href="/"
-          className="font-sans text-[10px] tracking-[0.4em] uppercase font-medium hover:opacity-60 transition-opacity duration-300"
+          className="font-body font-light text-[10px] tracking-[0.4em] uppercase hover:opacity-60 transition-opacity duration-300"
         >
           REN KITAGAWA
         </a>
@@ -36,7 +36,7 @@ export default function Nav() {
             <a
               key={item}
               href="#"
-              className="font-sans text-[10px] tracking-[0.3em] text-white/40 uppercase hover:text-white transition-colors duration-300"
+              className="font-body font-light text-[10px] tracking-[0.3em] text-white/40 uppercase hover:text-white transition-colors duration-300"
             >
               {item}
             </a>
@@ -50,17 +50,17 @@ export default function Nav() {
           aria-label={open ? "Close menu" : "Open menu"}
         >
           <span
-            className={`block h-px bg-white transition-all duration-400 ${
+            className={`block h-px bg-white transition-all duration-300 ${
               open ? "rotate-45 translate-y-[7px] w-5" : "w-5"
             }`}
           />
           <span
-            className={`block h-px bg-white transition-all duration-400 ${
+            className={`block h-px bg-white transition-all duration-300 ${
               open ? "opacity-0 w-5" : "w-3"
             }`}
           />
           <span
-            className={`block h-px bg-white transition-all duration-400 ${
+            className={`block h-px bg-white transition-all duration-300 ${
               open ? "-rotate-45 -translate-y-[7px] w-5" : "w-5"
             }`}
           />
@@ -78,7 +78,7 @@ export default function Nav() {
             <a
               key={item}
               href="#"
-              className="font-sans text-[11px] tracking-[0.35em] text-white/50 uppercase hover:text-white transition-colors duration-300"
+              className="font-body font-light text-[11px] tracking-[0.35em] text-white/50 uppercase hover:text-white transition-colors duration-300"
               onClick={() => setOpen(false)}
             >
               {item}
