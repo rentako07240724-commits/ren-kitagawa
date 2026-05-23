@@ -1,16 +1,31 @@
+import fs from "fs";
+import path from "path";
 import Image from "next/image";
 import Nav from "@/app/components/Nav";
 import Loader from "@/app/components/Loader";
 import VideoSection from "@/app/components/VideoSection";
 
-const looks = [
-  { src: "/images/look1.jpg", label: "Look 01" },
-  { src: "/images/look2.jpg", label: "Look 02" },
-  { src: "/images/look3.jpg", label: "Look 03" },
-  { src: "/images/look4.jpg", label: "Look 04" },
-];
+/** ビルド時に public/images/collection/ の画像ファイル一覧を取得 */
+function getCollectionImages(): string[] {
+  const dir = path.join(process.cwd(), "public", "images", "collection");
+  try {
+    return fs
+      .readdirSync(dir)
+      .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f))
+      .sort()
+      .map((f) => `/images/collection/${f}`);
+  } catch {
+    return [];
+  }
+}
+
+/** 画像がない場合のプレースホルダー数 */
+const PLACEHOLDER_COUNT = 4;
 
 export default function Home() {
+  const collectionImages = getCollectionImages();
+  const hasImages = collectionImages.length > 0;
+
   return (
     <>
       <Loader />
@@ -19,8 +34,6 @@ export default function Home() {
 
         {/* ── 1. Hero ──────────────────────────────────── */}
         <section className="relative h-screen overflow-hidden bg-black">
-
-          {/* Hero image — grayscale（なければ黒背景のまま） */}
           <Image
             src="/images/hero.jpg"
             alt="REN KITAGAWA SS2026"
@@ -28,21 +41,17 @@ export default function Home() {
             className="object-cover object-center grayscale opacity-70"
             priority
           />
-          {/* Bottom fade */}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
-          {/* Bottom-left brand name */}
           <div className="absolute bottom-10 left-6 md:bottom-16 md:left-12 z-10">
             <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/35 uppercase mb-3">
               SS 2026
             </p>
-            {/* 1行で表示 — whitespace-nowrap で改行なし */}
             <h1 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-[clamp(2.5rem,9vw,8rem)] whitespace-nowrap">
               REN KITAGAWA
             </h1>
           </div>
 
-          {/* Scroll cue */}
           <div className="absolute bottom-10 right-6 md:right-12 opacity-20">
             <div className="h-10 w-px bg-white animate-pulse" />
           </div>
@@ -67,33 +76,45 @@ export default function Home() {
         {/* ── 3. Collection ────────────────────────────── */}
         <section id="collection" className="px-6 md:px-12 py-20 md:py-36">
 
-          {/* Header — SS 2026 のみ */}
           <div className="mb-10 md:mb-16">
             <h2 className="font-heading text-[10px] tracking-[0.5em] uppercase text-white/40">
               SS 2026
             </h2>
           </div>
 
-          {/* 2-column portrait grid */}
-          <div className="grid grid-cols-2 gap-2 md:gap-4">
-            {looks.map((look, i) => (
-              <div key={i} className="group">
-                {/* 黒プレースホルダー：画像がなければ #0d0d0d の矩形 */}
-                <div className="relative aspect-[3/4] overflow-hidden bg-[#0d0d0d]">
-                  <Image
-                    src={look.src}
-                    alt={look.label}
-                    fill
-                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500" />
+          {hasImages ? (
+            /* ── 画像あり: 2カラムグリッド ─────────────── */
+            <div className="grid grid-cols-2 gap-2 md:gap-4">
+              {collectionImages.map((src, i) => (
+                <div key={src} className="group">
+                  <div className="relative aspect-[3/4] overflow-hidden bg-[#0d0d0d]">
+                    <Image
+                      src={src}
+                      alt={`Look ${String(i + 1).padStart(2, "0")}`}
+                      fill
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500" />
+                  </div>
+                  <p className="font-body font-light text-[8px] tracking-[0.3em] text-white/20 uppercase mt-2">
+                    Look {String(i + 1).padStart(2, "0")}
+                  </p>
                 </div>
-                <p className="font-body font-light text-[8px] tracking-[0.3em] text-white/20 uppercase mt-2">
-                  {look.label}
-                </p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            /* ── 画像なし: 黒プレースホルダー ──────────── */
+            <div className="grid grid-cols-2 gap-2 md:gap-4">
+              {Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
+                <div key={i}>
+                  <div className="relative aspect-[3/4] bg-[#0d0d0d]" />
+                  <p className="font-body font-light text-[8px] tracking-[0.3em] text-white/10 uppercase mt-2">
+                    Look {String(i + 1).padStart(2, "0")}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* ── Divider ──────────────────────────────────── */}
@@ -101,10 +122,10 @@ export default function Home() {
           <div className="h-px bg-white/8" />
         </div>
 
-        {/* ── 3. Video ─────────────────────────────────── */}
+        {/* ── 4. Video ─────────────────────────────────── */}
         <VideoSection />
 
-        {/* ── 4. Instagram ─────────────────────────────── */}
+        {/* ── 5. Instagram ─────────────────────────────── */}
         <section className="px-6 md:px-12 py-24 md:py-44 flex flex-col items-center text-center gap-6">
           <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/25 uppercase">
             Follow
@@ -122,7 +143,7 @@ export default function Home() {
           </p>
         </section>
 
-        {/* ── 5. Footer ────────────────────────────────── */}
+        {/* ── 6. Footer ────────────────────────────────── */}
         <footer className="border-t border-white/8 px-6 md:px-12 py-8 md:py-10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
             <p className="font-body font-light text-[8px] tracking-[0.35em] text-white/15 uppercase">
