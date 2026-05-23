@@ -105,6 +105,16 @@ export default function Home() {
             images={collectionImages}
             placeholderCount={PLACEHOLDER_COUNT}
           />
+
+          {/* MORE button */}
+          <div className="flex justify-center mt-10">
+            <Link
+              href="/collection/ss2026"
+              className="font-body font-light text-[8px] tracking-[0.45em] text-white uppercase border-[0.5px] border-white px-8 py-3 hover:bg-white hover:text-black transition-colors duration-300"
+            >
+              MORE
+            </Link>
+          </div>
         </section>
 
         {/* ── 4. Collection links ───────────────────────── */}
