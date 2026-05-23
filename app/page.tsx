@@ -38,7 +38,8 @@ export default function Home() {
             src="/images/hero.jpg"
             alt="REN KITAGAWA SS2026"
             fill
-            className="object-cover object-center grayscale opacity-70"
+            className="object-cover object-center"
+            quality={100}
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
@@ -93,6 +94,7 @@ export default function Home() {
                       alt={`Look ${String(i + 1).padStart(2, "0")}`}
                       fill
                       className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                    quality={100}
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500" />
                   </div>
