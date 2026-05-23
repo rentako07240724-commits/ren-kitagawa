@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Loader() {
   const [hidden, setHidden] = useState(false);
@@ -30,12 +31,16 @@ export default function Loader() {
 
       {/* Centered content */}
       <div className="relative flex flex-col items-center gap-5">
-        <p
-          className="font-heading text-[clamp(1.4rem,7vw,3.5rem)] tracking-[0.25em] uppercase text-white animate-pulse"
-          style={{ letterSpacing: "0.25em" }}
-        >
-          REN KITAGAWA
-        </p>
+        <div className="animate-pulse" style={{ width: 200 }}>
+          <Image
+            src="/images/logo.png"
+            alt="REN KITAGAWA"
+            width={200}
+            height={80}
+            style={{ objectFit: "contain", width: 200, height: "auto" }}
+            priority
+          />
+        </div>
         <p className="font-body font-light text-[10px] tracking-[0.55em] text-white/35 uppercase">
           CALCULATED SILENCE.
         </p>
