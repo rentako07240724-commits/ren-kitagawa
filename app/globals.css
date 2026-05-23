@@ -20,6 +20,15 @@
   background: #222;
 }
 
+/* ── Horizontal scroll: hide scrollbar ───────── */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* ── Loader ───────────────────────────────────── */
 @keyframes loader-fade-out {
   0%   { opacity: 1; }

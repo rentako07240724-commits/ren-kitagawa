@@ -3,6 +3,7 @@ import path from "path";
 import Image from "next/image";
 import Nav from "@/app/components/Nav";
 import Loader from "@/app/components/Loader";
+import CollectionSlider from "@/app/components/CollectionSlider";
 
 /** ビルド時に public/images/collection/ の画像ファイル一覧を取得 */
 function getCollectionImages(): string[] {
@@ -67,7 +68,7 @@ export default function Home() {
           />
           {/* Bottom-left concept text */}
           <div className="absolute bottom-10 left-6 md:bottom-14 md:left-12 z-10">
-            <p className="font-body font-light text-[9px] tracking-[0.28em] text-white/70 uppercase leading-[2.6]">
+            <p className="font-body font-light text-sm tracking-[0.28em] text-white/85 uppercase leading-[2.6]">
               Clothing built from silence.<br />
               Tension held in fabric.<br />
               Noise placed with intention.
@@ -75,34 +76,20 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 3. Collection grid ───────────────────────── */}
-        <section id="collection" className="px-6 md:px-12 pt-20 pb-24 md:pt-[80px] md:pb-40">
+        {/* ── 3. Collection — swipe slider ─────────────── */}
+        <section id="collection" className="pb-24 md:pb-40">
           {/* SS 2026 ヘッダー */}
-          <p className="font-body font-light text-[10px] tracking-[0.5em] text-white uppercase mb-10 md:mb-12">
-            SS 2026
-          </p>
+          <div className="px-6 md:px-12 pt-20 md:pt-[80px] mb-10 md:mb-12">
+            <p className="font-body font-light text-[10px] tracking-[0.5em] text-white uppercase">
+              SS 2026
+            </p>
+          </div>
 
-          {hasImages ? (
-            <div className="grid grid-cols-2 gap-8 md:gap-10">
-              {collectionImages.map((src, i) => (
-                <div key={src} className="relative aspect-[3/4] overflow-hidden bg-[#0d0d0d]">
-                  <Image
-                    src={src}
-                    alt={`Look ${i + 1}`}
-                    fill
-                    className="object-cover object-top"
-                    quality={100}
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-8 md:gap-10">
-              {Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
-                <div key={i} className="relative aspect-[3/4] bg-[#0d0d0d]" />
-              ))}
-            </div>
-          )}
+          {/* Swipe slider */}
+          <CollectionSlider
+            images={collectionImages}
+            placeholderCount={PLACEHOLDER_COUNT}
+          />
         </section>
 
         {/* ── 4. Concept ───────────────────────────────── */}
