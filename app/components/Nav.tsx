@@ -14,7 +14,7 @@ export default function Nav() {
         {/* Left — brand name in Archivo Black */}
         <a
           href="/"
-          className="font-heading text-[11px] tracking-[0.4em] uppercase text-white hover:opacity-50 transition-opacity duration-300"
+          className="font-heading text-[9px] tracking-[0.25em] uppercase text-white hover:opacity-50 transition-opacity duration-300"
         >
           REN KITAGAWA
         </a>
@@ -25,7 +25,7 @@ export default function Nav() {
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
-              className="font-body font-light text-[10px] tracking-[0.35em] text-white/40 uppercase hover:text-white transition-colors duration-300"
+              className="font-body font-light text-[9px] tracking-[0.25em] text-white/40 uppercase hover:text-white transition-colors duration-300"
             >
               {item}
             </a>
@@ -55,7 +55,7 @@ export default function Nav() {
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
-              className="font-body font-light text-[11px] tracking-[0.35em] text-white/50 uppercase hover:text-white transition-colors duration-300"
+              className="font-body font-light text-[9px] tracking-[0.25em] text-white/50 uppercase hover:text-white transition-colors duration-300"
               onClick={() => setOpen(false)}
             >
               {item}
