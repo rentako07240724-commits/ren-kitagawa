@@ -1,29 +1,30 @@
 import fs from "fs";
 import path from "path";
 import Image from "next/image";
+import Link from "next/link";
 import Nav from "@/app/components/Nav";
 import Loader from "@/app/components/Loader";
-import CollectionSlider from "@/app/components/CollectionSlider";
 
-/** ビルド時に public/images/collection/ の画像ファイル一覧を取得 */
-function getCollectionImages(): string[] {
-  const dir = path.join(process.cwd(), "public", "images", "collection");
+/** ビルド時に各コレクションフォルダの先頭画像を取得（サムネイル用） */
+function getFirstImage(subfolder: string): string | null {
+  const dir = path.join(process.cwd(), "public", "images", "collection", subfolder);
   try {
-    return fs
+    const files = fs
       .readdirSync(dir)
       .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f))
-      .sort()
-      .map((f) => `/images/collection/${f}`);
+      .sort();
+    return files.length > 0 ? `/images/collection/${subfolder}/${files[0]}` : null;
   } catch {
-    return [];
+    return null;
   }
 }
 
-const PLACEHOLDER_COUNT = 4;
-
 export default function Home() {
-  const collectionImages = getCollectionImages();
-  const hasImages = collectionImages.length > 0;
+  const collectionItems = [
+    { label: "1ST SEASON", href: "/collection/1st-season", thumb: getFirstImage("1st") },
+    { label: "2ND SEASON", href: "/collection/2nd-season", thumb: getFirstImage("2nd") },
+    { label: "RUNWAY",     href: "/collection/runway",     thumb: getFirstImage("runway") },
+  ];
 
   return (
     <>
@@ -76,20 +77,37 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 3. Collection — swipe slider ─────────────── */}
+        {/* ── 3. Collection — grid ─────────────────────── */}
         <section id="collection" className="pb-24 md:pb-40">
-          {/* SS 2026 ヘッダー */}
           <div className="px-6 md:px-12 pt-20 md:pt-[80px] mb-10 md:mb-12">
             <p className="font-body font-light text-[10px] tracking-[0.5em] text-white uppercase">
               SS 2026
             </p>
           </div>
 
-          {/* Swipe slider */}
-          <CollectionSlider
-            images={collectionImages}
-            placeholderCount={PLACEHOLDER_COUNT}
-          />
+          <div className="flex flex-col gap-px">
+            {collectionItems.map(({ label, href, thumb }) => (
+              <Link
+                key={label}
+                href={href}
+                className="relative w-full aspect-[3/4] bg-[#0d0d0d] block overflow-hidden group"
+              >
+                {thumb && (
+                  <Image
+                    src={thumb}
+                    alt={label}
+                    fill
+                    className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
+                    quality={100}
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <p className="absolute bottom-5 left-6 font-body font-light text-[8px] tracking-[0.45em] text-white/70 uppercase z-10">
+                  {label}
+                </p>
+              </Link>
+            ))}
+          </div>
         </section>
 
         {/* ── 4. Concept ───────────────────────────────── */}
