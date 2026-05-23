@@ -31,7 +31,7 @@ export default function Home() {
       <main className="bg-black text-white">
 
         {/* ── 1. Hero ──────────────────────────────────── */}
-        <section className="relative h-screen overflow-hidden bg-black">
+        <section className="relative h-screen overflow-hidden bg-black mb-[120px]">
           <Image
             src="/images/hero.jpg"
             alt="REN KITAGAWA SS2026"
@@ -57,7 +57,7 @@ export default function Home() {
         </section>
 
         {/* ── 2. Sub-hero ──────────────────────────────── */}
-        <section className="relative h-screen overflow-hidden bg-black">
+        <section className="relative h-screen overflow-hidden bg-black mb-[120px]">
           <Image
             src="/images/hero2.jpg"
             alt="REN KITAGAWA"
@@ -65,13 +65,25 @@ export default function Home() {
             className="object-cover object-center"
             quality={100}
           />
+          {/* Bottom-left concept text */}
+          <div className="absolute bottom-10 left-6 md:bottom-14 md:left-12 z-10">
+            <p className="font-body font-light text-[9px] tracking-[0.28em] text-white/70 uppercase leading-[2.6]">
+              Clothing built from silence.<br />
+              Tension held in fabric.<br />
+              Noise placed with intention.
+            </p>
+          </div>
         </section>
 
         {/* ── 3. Collection grid ───────────────────────── */}
-        {/* gap-px + bg-black = 1px 黒ライン、テキストなし、edge-to-edge */}
-        <section id="collection">
+        <section id="collection" className="px-6 md:px-12 pt-20 pb-24 md:pt-[80px] md:pb-40">
+          {/* SS 2026 ヘッダー */}
+          <p className="font-body font-light text-[10px] tracking-[0.5em] text-white uppercase mb-10 md:mb-12">
+            SS 2026
+          </p>
+
           {hasImages ? (
-            <div className="grid grid-cols-2 gap-px bg-black">
+            <div className="grid grid-cols-2 gap-8 md:gap-10">
               {collectionImages.map((src, i) => (
                 <div key={src} className="relative aspect-[3/4] overflow-hidden bg-[#0d0d0d]">
                   <Image
@@ -85,7 +97,7 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-px bg-black">
+            <div className="grid grid-cols-2 gap-8 md:gap-10">
               {Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
                 <div key={i} className="relative aspect-[3/4] bg-[#0d0d0d]" />
               ))}
