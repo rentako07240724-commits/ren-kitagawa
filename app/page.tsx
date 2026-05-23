@@ -144,7 +144,17 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 5. Instagram ─────────────────────────────── */}
+        {/* ── 5. Brand text ────────────────────────────── */}
+        <section className="bg-black px-8 py-[120px]">
+          <p className="font-body font-light text-sm tracking-[0.1em] text-white/80 leading-loose">
+            Born from friction.<br />
+            Shaped by restraint.<br />
+            Worn by those who understand<br />
+            that noise, too, can be quiet.
+          </p>
+        </section>
+
+        {/* ── 6. Instagram ─────────────────────────────── */}
         <section className="px-6 md:px-12 py-24 md:py-44 flex flex-col items-center text-center gap-6">
           <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/25 uppercase">
             Follow
@@ -162,7 +172,7 @@ export default function Home() {
           </p>
         </section>
 
-        {/* ── 6. Footer ────────────────────────────────── */}
+        {/* ── 7. Footer ────────────────────────────────── */}
         <footer className="border-t border-white/8 px-6 md:px-12 py-8 md:py-10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
             <p className="font-body font-light text-[8px] tracking-[0.35em] text-white/15 uppercase">
