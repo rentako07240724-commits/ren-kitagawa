@@ -40,7 +40,7 @@ export default function CollectionSlider({ images, placeholderCount }: Props) {
                   src={src}
                   alt={`Look ${i + 1}`}
                   fill
-                  className="object-cover object-top"
+                  className="object-contain"
                   quality={100}
                 />
               )}

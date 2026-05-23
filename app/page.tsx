@@ -66,9 +66,9 @@ export default function Home() {
             className="object-cover object-center"
             quality={100}
           />
-          {/* Bottom-left concept text */}
-          <div className="absolute bottom-10 left-6 md:bottom-14 md:left-12 z-10">
-            <p className="font-body font-light text-sm tracking-[0.28em] text-white/85 uppercase leading-[2.6]">
+          {/* Bottom-left concept text — ぎりぎり左下 */}
+          <div className="absolute bottom-4 left-4 z-10">
+            <p className="font-body font-light text-[10px] tracking-[0.28em] text-white/85 uppercase leading-[2.4]">
               Clothing built from silence.<br />
               Tension held in fabric.<br />
               Noise placed with intention.
