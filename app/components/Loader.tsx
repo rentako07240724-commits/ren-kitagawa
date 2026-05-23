@@ -5,6 +5,7 @@ import Image from "next/image";
 
 export default function Loader() {
   const [hidden, setHidden] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     // Hide from DOM after animation completes (2.2s)
@@ -31,15 +32,23 @@ export default function Loader() {
 
       {/* Centered content */}
       <div className="relative flex flex-col items-center gap-5">
-        <div className="animate-pulse" style={{ width: 200 }}>
-          <Image
-            src="/images/logo.png"
-            alt="REN KITAGAWA"
-            width={200}
-            height={80}
-            style={{ objectFit: "contain", width: 200, height: "auto" }}
-            priority
-          />
+        <div className="animate-pulse flex items-center justify-center" style={{ width: 200, minHeight: 48 }}>
+          {!imgError ? (
+            <Image
+              src="/images/logo.png"
+              alt="REN KITAGAWA"
+              width={200}
+              height={80}
+              style={{ objectFit: "contain", width: 200, height: "auto" }}
+              priority
+              onError={() => setImgError(true)}
+            />
+          ) : (
+            // Fallback text when logo.png is not found
+            <p className="font-heading text-[clamp(1.2rem,6vw,2.8rem)] tracking-[0.2em] uppercase text-white">
+              REN KITAGAWA
+            </p>
+          )}
         </div>
         <p className="font-body font-light text-[10px] tracking-[0.55em] text-white/35 uppercase">
           CALCULATED SILENCE.
