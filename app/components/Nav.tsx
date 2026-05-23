@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 
-const links = ["Collection", "About", "Contact"];
+const links = [
+  { label: "Collection", href: "/#collection" },
+  { label: "About",      href: "/about" },
+  { label: "Contact",    href: "/contact" },
+];
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
@@ -21,13 +25,13 @@ export default function Nav() {
 
         {/* Right — desktop links */}
         <div className="hidden md:flex items-center gap-10">
-          {links.map((item) => (
+          {links.map(({ label, href }) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={label}
+              href={href}
               className="font-body font-light text-[9px] tracking-[0.25em] text-white/40 uppercase hover:text-white transition-colors duration-300"
             >
-              {item}
+              {label}
             </a>
           ))}
         </div>
@@ -51,14 +55,14 @@ export default function Nav() {
         }`}
       >
         <div className="px-6 py-8 flex flex-col gap-7">
-          {links.map((item) => (
+          {links.map(({ label, href }) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={label}
+              href={href}
               className="font-body font-light text-[9px] tracking-[0.25em] text-white/50 uppercase hover:text-white transition-colors duration-300"
               onClick={() => setOpen(false)}
             >
-              {item}
+              {label}
             </a>
           ))}
         </div>
