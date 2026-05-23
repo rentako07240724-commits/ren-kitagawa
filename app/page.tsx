@@ -4,8 +4,23 @@ import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/app/components/Nav";
 import Loader from "@/app/components/Loader";
+import CollectionSlider from "@/app/components/CollectionSlider";
 
-/** ビルド時に各コレクションフォルダの先頭画像を取得（サムネイル用） */
+/** public/images/collection/ 直下の画像（スワイプ用） */
+function getCollectionImages(): string[] {
+  const dir = path.join(process.cwd(), "public", "images", "collection");
+  try {
+    return fs
+      .readdirSync(dir)
+      .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f))
+      .sort()
+      .map((f) => `/images/collection/${f}`);
+  } catch {
+    return [];
+  }
+}
+
+/** 各サブフォルダの先頭画像（サムネイル用） */
 function getFirstImage(subfolder: string): string | null {
   const dir = path.join(process.cwd(), "public", "images", "collection", subfolder);
   try {
@@ -19,7 +34,10 @@ function getFirstImage(subfolder: string): string | null {
   }
 }
 
+const PLACEHOLDER_COUNT = 4;
+
 export default function Home() {
+  const collectionImages = getCollectionImages();
   const collectionItems = [
     { label: "1ST SEASON", href: "/collection/1st-season", thumb: getFirstImage("1st") },
     { label: "2ND SEASON", href: "/collection/2nd-season", thumb: getFirstImage("2nd") },
@@ -67,7 +85,6 @@ export default function Home() {
             className="object-cover object-center"
             quality={100}
           />
-          {/* Bottom-left concept text — ぎりぎり左下 */}
           <div className="absolute bottom-4 left-4 z-10">
             <p className="font-body font-light text-[10px] tracking-[0.28em] text-white/85 uppercase leading-[2.4]">
               Clothing built from silence.<br />
@@ -77,14 +94,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 3. Collection — grid ─────────────────────── */}
-        <section id="collection" className="pb-24 md:pb-40">
+        {/* ── 3. SS 2026 スワイプ式写真 ─────────────────── */}
+        <section className="pb-16 md:pb-24">
           <div className="px-6 md:px-12 pt-20 md:pt-[80px] mb-10 md:mb-12">
             <p className="font-body font-light text-[10px] tracking-[0.5em] text-white uppercase">
               SS 2026
             </p>
           </div>
+          <CollectionSlider
+            images={collectionImages}
+            placeholderCount={PLACEHOLDER_COUNT}
+          />
+        </section>
 
+        {/* ── 4. Collection links ───────────────────────── */}
+        <section id="collection" className="pt-16 md:pt-20 pb-24 md:pb-40">
           <div className="flex flex-col gap-px">
             {collectionItems.map(({ label, href, thumb }) => (
               <Link
@@ -107,17 +131,6 @@ export default function Home() {
                 </p>
               </Link>
             ))}
-          </div>
-        </section>
-
-        {/* ── 4. Concept ───────────────────────────────── */}
-        <section className="px-6 md:px-12 py-28 md:py-48">
-          <div className="max-w-lg">
-            <p className="font-body font-light text-[11px] md:text-xs tracking-[0.22em] text-white/70 leading-[2.8] uppercase">
-              Clothing built from silence.<br />
-              Tension held in fabric.<br />
-              Noise placed with intention.
-            </p>
           </div>
         </section>
 
