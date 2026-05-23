@@ -3,7 +3,6 @@ import path from "path";
 import Image from "next/image";
 import Nav from "@/app/components/Nav";
 import Loader from "@/app/components/Loader";
-import VideoSection from "@/app/components/VideoSection";
 
 /** ビルド時に public/images/collection/ の画像ファイル一覧を取得 */
 function getCollectionImages(): string[] {
@@ -19,7 +18,6 @@ function getCollectionImages(): string[] {
   }
 }
 
-/** 画像がない場合のプレースホルダー数 */
 const PLACEHOLDER_COUNT = 4;
 
 export default function Home() {
@@ -58,7 +56,44 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 2. Concept ───────────────────────────────── */}
+        {/* ── 2. Sub-hero ──────────────────────────────── */}
+        <section className="relative h-screen overflow-hidden bg-black">
+          <Image
+            src="/images/hero2.jpg"
+            alt="REN KITAGAWA"
+            fill
+            className="object-cover object-center"
+            quality={100}
+          />
+        </section>
+
+        {/* ── 3. Collection grid ───────────────────────── */}
+        {/* gap-px + bg-black = 1px 黒ライン、テキストなし、edge-to-edge */}
+        <section id="collection">
+          {hasImages ? (
+            <div className="grid grid-cols-2 gap-px bg-black">
+              {collectionImages.map((src, i) => (
+                <div key={src} className="relative aspect-[3/4] overflow-hidden bg-[#0d0d0d]">
+                  <Image
+                    src={src}
+                    alt={`Look ${i + 1}`}
+                    fill
+                    className="object-cover object-top"
+                    quality={100}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-px bg-black">
+              {Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
+                <div key={i} className="relative aspect-[3/4] bg-[#0d0d0d]" />
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* ── 4. Concept ───────────────────────────────── */}
         <section className="px-6 md:px-12 py-28 md:py-48">
           <div className="max-w-lg">
             <p className="font-body font-light text-[11px] md:text-xs tracking-[0.22em] text-white/70 leading-[2.8] uppercase">
@@ -68,64 +103,6 @@ export default function Home() {
             </p>
           </div>
         </section>
-
-        {/* ── Divider ──────────────────────────────────── */}
-        <div className="px-6 md:px-12">
-          <div className="h-px bg-white/8" />
-        </div>
-
-        {/* ── 3. Collection ────────────────────────────── */}
-        <section id="collection" className="px-6 md:px-12 py-20 md:py-36">
-
-          <div className="mb-10 md:mb-16">
-            <h2 className="font-heading text-[10px] tracking-[0.5em] uppercase text-white/40">
-              SS 2026
-            </h2>
-          </div>
-
-          {hasImages ? (
-            /* ── 画像あり: 2カラムグリッド ─────────────── */
-            <div className="grid grid-cols-2 gap-2 md:gap-4">
-              {collectionImages.map((src, i) => (
-                <div key={src} className="group">
-                  <div className="relative aspect-[3/4] overflow-hidden bg-[#0d0d0d]">
-                    <Image
-                      src={src}
-                      alt={`Look ${String(i + 1).padStart(2, "0")}`}
-                      fill
-                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                    quality={100}
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500" />
-                  </div>
-                  <p className="font-body font-light text-[8px] tracking-[0.3em] text-white/20 uppercase mt-2">
-                    Look {String(i + 1).padStart(2, "0")}
-                  </p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            /* ── 画像なし: 黒プレースホルダー ──────────── */
-            <div className="grid grid-cols-2 gap-2 md:gap-4">
-              {Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
-                <div key={i}>
-                  <div className="relative aspect-[3/4] bg-[#0d0d0d]" />
-                  <p className="font-body font-light text-[8px] tracking-[0.3em] text-white/10 uppercase mt-2">
-                    Look {String(i + 1).padStart(2, "0")}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* ── Divider ──────────────────────────────────── */}
-        <div className="px-6 md:px-12">
-          <div className="h-px bg-white/8" />
-        </div>
-
-        {/* ── 4. Video ─────────────────────────────────── */}
-        <VideoSection />
 
         {/* ── 5. Instagram ─────────────────────────────── */}
         <section className="px-6 md:px-12 py-24 md:py-44 flex flex-col items-center text-center gap-6">
