@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const key = process.env.STRIPE_SECRET_KEY;
-  console.log("[checkout] key prefix:", key?.slice(0, 10) ?? "MISSING");
 
   if (!key || !key.startsWith("sk_")) {
     return NextResponse.json(
@@ -12,14 +11,12 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { priceId } = await req.json();
-    console.log("[checkout] priceId:", priceId);
+    const { priceId, size } = await req.json();
 
     const proto = req.headers.get("x-forwarded-proto") ?? "https";
     const host  = req.headers.get("host") ?? "ren-kitagawa.vercel.app";
     const base  = `${proto}://${host}`;
 
-    // Stripe SDK を使わず fetch で直接 REST API を呼ぶ
     const params = new URLSearchParams();
     params.append("payment_method_types[]", "card");
     params.append("line_items[0][price]", priceId);
@@ -27,6 +24,9 @@ export async function POST(req: NextRequest) {
     params.append("mode", "payment");
     params.append("success_url", `${base}/shop?success=1`);
     params.append("cancel_url",  `${base}/shop`);
+    if (size) {
+      params.append("metadata[size]", size);
+    }
 
     const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
@@ -38,7 +38,6 @@ export async function POST(req: NextRequest) {
     });
 
     const data = await stripeRes.json() as { url?: string; error?: { message: string } };
-    console.log("[checkout] stripe status:", stripeRes.status);
 
     if (!stripeRes.ok || data.error) {
       const msg = data.error?.message ?? "Stripe API error";

@@ -2,16 +2,7 @@ import fs from "fs";
 import path from "path";
 import Image from "next/image";
 import Link from "next/link";
-import OrderButton from "./components/OrderButton";
-
-const products = [
-  { slug: "shy-hoodie",  name: "Shy Hoodie",  price: 31000, priceId: "price_1TaeEB15Xhry8bPT1Zjec0uj" },
-  { slug: "frame-jeans", name: "Frame Jeans", price: 26800, priceId: "price_1TaeEC15Xhry8bPTs2XFYLbR" },
-  { slug: "frow-jeans",  name: "Frow Jeans",  price: 24000, priceId: "price_1TaeEE15Xhry8bPTXK92P1uR" },
-  { slug: "vector-ma1",  name: "Vector MA-1", price: 38000, priceId: "price_1TaeEE15Xhry8bPTXEU3mUVm" },
-  { slug: "core-tee",    name: "Core Tee",    price: 4600,  priceId: "price_1TaeEG15Xhry8bPThOzdI35s"  },
-  { slug: "shift-bag",   name: "Shift Bag",   price: 26000, priceId: "price_1TaeEH15Xhry8bPT923uiRgQ" },
-];
+import { products } from "@/lib/products";
 
 function getProductImage(slug: string): string | null {
   for (const ext of ["jpg", "jpeg", "png", "webp", "avif"]) {
@@ -65,25 +56,26 @@ export default function ShopPage() {
         {products.map((product) => {
           const img = getProductImage(product.slug);
           return (
-            <div
+            <Link
               key={product.slug}
-              className="border-t border-white/8 px-6 md:px-12 py-10"
+              href={`/shop/${product.slug}`}
+              className="border-t border-white/8 px-6 md:px-12 py-10 block group"
             >
               {/* Image */}
-              <div className="relative w-full aspect-[3/4] bg-[#0d0d0d] mb-7">
+              <div className="relative w-full aspect-[3/4] bg-[#0d0d0d] mb-7 overflow-hidden">
                 {img && (
                   <Image
                     src={img}
                     alt={product.name}
                     fill
-                    className="object-contain"
+                    className="object-contain transition-opacity duration-500 group-hover:opacity-70"
                     quality={100}
                   />
                 )}
               </div>
 
               {/* Info */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3">
                 <div className="flex items-baseline justify-between gap-4">
                   <h2 className="font-heading text-base uppercase tracking-[0.04em]">
                     {product.name}
@@ -92,14 +84,14 @@ export default function ShopPage() {
                     ¥{product.price.toLocaleString()}
                   </p>
                 </div>
-
                 <p className="font-body font-light text-[8px] tracking-[0.4em] text-white/25 uppercase">
                   Made to order
                 </p>
-
-                <OrderButton priceId={product.priceId} />
+                <p className="font-body font-light text-[8px] tracking-[0.35em] text-white/20 uppercase group-hover:text-white/50 transition-colors duration-300">
+                  View →
+                </p>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
