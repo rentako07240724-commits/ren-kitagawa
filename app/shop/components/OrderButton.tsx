@@ -3,11 +3,10 @@
 import { useState } from "react";
 
 type Props = {
-  name: string;
-  price: number;
+  priceId: string;
 };
 
-export default function OrderButton({ name, price }: Props) {
+export default function OrderButton({ priceId }: Props) {
   const [loading, setLoading] = useState(false);
 
   const handleOrder = async () => {
@@ -16,7 +15,7 @@ export default function OrderButton({ name, price }: Props) {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, price }),
+        body: JSON.stringify({ priceId }),
       });
       const { url, error } = await res.json();
       if (error) throw new Error(error);

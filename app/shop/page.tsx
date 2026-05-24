@@ -5,12 +5,12 @@ import Link from "next/link";
 import OrderButton from "./components/OrderButton";
 
 const products = [
-  { slug: "shy-hoodie",  name: "Shy Hoodie",  price: 31000 },
-  { slug: "frame-jeans", name: "Frame Jeans", price: 26800 },
-  { slug: "frow-jeans",  name: "Frow Jeans",  price: 24000 },
-  { slug: "vector-ma1",  name: "Vector MA-1", price: 38000 },
-  { slug: "core-tee",    name: "Core Tee",    price: 4600  },
-  { slug: "shift-bag",   name: "Shift Bag",   price: 26000 },
+  { slug: "shy-hoodie",  name: "Shy Hoodie",  price: 31000, priceId: "price_1TaeEB15Xhry8bPT1Zjec0uj" },
+  { slug: "frame-jeans", name: "Frame Jeans", price: 26800, priceId: "price_1TaeEC15Xhry8bPTs2XFYLbR" },
+  { slug: "frow-jeans",  name: "Frow Jeans",  price: 24000, priceId: "price_1TaeEE15Xhry8bPTXK92P1uR" },
+  { slug: "vector-ma1",  name: "Vector MA-1", price: 38000, priceId: "price_1TaeEE15Xhry8bPTXEU3mUVm" },
+  { slug: "core-tee",    name: "Core Tee",    price: 4600,  priceId: "price_1TaeEG15Xhry8bPThOzdI35s"  },
+  { slug: "shift-bag",   name: "Shift Bag",   price: 26000, priceId: "price_1TaeEH15Xhry8bPT923uiRgQ" },
 ];
 
 function getProductImage(slug: string): string | null {
@@ -97,7 +97,7 @@ export default function ShopPage() {
                   Made to order
                 </p>
 
-                <OrderButton name={product.name} price={product.price} />
+                <OrderButton priceId={product.priceId} />
               </div>
             </div>
           );
