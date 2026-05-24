@@ -1,14 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
   const key = process.env.STRIPE_SECRET_KEY;
+  console.log("[checkout] key prefix:", key?.slice(0, 10) ?? "MISSING");
 
-  // キー確認ログ（先頭8文字だけ出力）
-  console.log("[checkout] key prefix:", key?.slice(0, 8) ?? "MISSING");
-
-  if (!key || key.includes("ここに貼る")) {
-    console.error("[checkout] Stripe secret key is not configured");
+  if (!key || !key.startsWith("sk_")) {
     return NextResponse.json(
       { error: "Stripe secret key is not configured." },
       { status: 500 }
@@ -16,34 +12,45 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const stripe = new Stripe(key, { apiVersion: "2026-04-22.dahlia" });
-
-    const body = await req.json();
-    const { priceId } = body;
+    const { priceId } = await req.json();
     console.log("[checkout] priceId:", priceId);
 
-    // Vercel ではリクエストヘッダーから URL を構築
     const proto = req.headers.get("x-forwarded-proto") ?? "https";
     const host  = req.headers.get("host") ?? "ren-kitagawa.vercel.app";
     const base  = `${proto}://${host}`;
-    console.log("[checkout] base URL:", base);
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: [{ price: priceId, quantity: 1 }],
-      mode: "payment",
-      success_url: `${base}/shop?success=1`,
-      cancel_url:  `${base}/shop`,
+    // Stripe SDK を使わず fetch で直接 REST API を呼ぶ
+    const params = new URLSearchParams();
+    params.append("payment_method_types[]", "card");
+    params.append("line_items[0][price]", priceId);
+    params.append("line_items[0][quantity]", "1");
+    params.append("mode", "payment");
+    params.append("success_url", `${base}/shop?success=1`);
+    params.append("cancel_url",  `${base}/shop`);
+
+    const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${key}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: params.toString(),
     });
 
-    console.log("[checkout] session created:", session.id);
-    return NextResponse.json({ url: session.url });
+    const data = await stripeRes.json() as { url?: string; error?: { message: string } };
+    console.log("[checkout] stripe status:", stripeRes.status);
+
+    if (!stripeRes.ok || data.error) {
+      const msg = data.error?.message ?? "Stripe API error";
+      console.error("[checkout] Stripe API error:", msg);
+      return NextResponse.json({ error: msg }, { status: 500 });
+    }
+
+    return NextResponse.json({ url: data.url });
 
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    const code    = (err as { code?: string }).code ?? "";
-    const type    = (err as { type?: string }).type ?? "";
-    console.error("[checkout] Stripe error:", message, "| code:", code, "| type:", type);
+    console.error("[checkout] unexpected error:", message);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
