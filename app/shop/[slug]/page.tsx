@@ -10,7 +10,7 @@ export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
 }
 
-function getImages(slug: string): SlideImage[] {
+function getImages(slug: string, ageingSample: boolean): SlideImage[] {
   const dir = path.join(process.cwd(), "public", "images", "products", slug);
   try {
     const files = fs
@@ -32,8 +32,8 @@ function getImages(slug: string): SlideImage[] {
     return files.map((f) => {
       const base = f.replace(/\.[^.]+$/, ""); // strip extension
       const num = parseInt(base, 10);
-      // 9.jpg 以降は AGEING SAMPLE ラベルを付与
-      const label = !isNaN(num) && num >= 9 ? "AGEING SAMPLE" : undefined;
+      // ageingSample フラグが立っている商品のみ 9.jpg 以降にラベルを付与
+      const label = ageingSample && !isNaN(num) && num >= 9 ? "AGEING SAMPLE" : undefined;
       return { src: `/images/products/${slug}/${f}`, label };
     });
   } catch {
@@ -50,7 +50,7 @@ export default async function ProductPage({
   const product = products.find((p) => p.slug === slug);
   if (!product) notFound();
 
-  const images = getImages(slug);
+  const images = getImages(slug, product.ageingSample ?? false);
 
   return (
     <main className="bg-black text-white min-h-screen">

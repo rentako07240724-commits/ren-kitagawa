@@ -12,8 +12,9 @@ export type Product = {
   priceId: string;
   descriptionJa: string;
   descriptionEn: string;
-  sizes: string[];         // ["ONE SIZE"] or ["S", "M", "L", "XL"]
+  sizes: string[];         // ["ONE SIZE"] or ["S", "M", "L", "XL"] or ["1", "2"]
   sizeGuide: SizeGuideRow[];
+  ageingSample?: boolean;  // true → 9.jpg 以降に "AGEING SAMPLE" を表示
 };
 
 export const products: Product[] = [
@@ -50,6 +51,7 @@ export const products: Product[] = [
       { label: "股下",     labelEn: "Inseam",       value: "74cm",  values: ["74cm",  "77cm"]  },
       { label: "総丈",     labelEn: "Total Length", value: "110cm", values: ["110cm", "113cm"] },
     ],
+    ageingSample: true,
   },
   {
     slug: "frow-jeans",
