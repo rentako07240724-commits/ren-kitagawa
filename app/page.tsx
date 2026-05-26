@@ -198,9 +198,9 @@ export default function Home() {
             </p>
             <div className="flex items-center gap-8 md:gap-10">
               {[
-                { label: "Shop",      href: "#" },
+                { label: "Shop",      href: "/shop" },
                 { label: "Instagram", href: "https://instagram.com/ren_kitagawa__" },
-                { label: "Contact",   href: "#contact" },
+                { label: "Contact",   href: "/contact" },
               ].map(({ label, href }) => (
                 <a
                   key={label}
