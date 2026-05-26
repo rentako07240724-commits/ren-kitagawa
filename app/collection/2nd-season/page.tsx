@@ -9,7 +9,18 @@ function getImages(): string[] {
     return fs
       .readdirSync(dir)
       .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f))
-      .sort()
+      .sort((a, b) => {
+        // main.* を先頭に
+        const aIsMain = a.toLowerCase().startsWith("main");
+        const bIsMain = b.toLowerCase().startsWith("main");
+        if (aIsMain && !bIsMain) return -1;
+        if (!aIsMain && bIsMain) return 1;
+        // 拡張子を除いた数字で昇順（jpg/png 混在対応）
+        const aNum = parseInt(a, 10);
+        const bNum = parseInt(b, 10);
+        if (!isNaN(aNum) && !isNaN(bNum)) return aNum - bNum;
+        return a.localeCompare(b);
+      })
       .map((f) => `/images/collection/2nd/${f}`);
   } catch {
     return [];
