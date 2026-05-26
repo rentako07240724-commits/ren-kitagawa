@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 
+const DEFAULT_ORDER_NOTE = "受注生産のため、発送まで1〜2ヶ月ほどお時間をいただきます。";
+
 type Props = {
   priceId: string;
   sizes: string[];
+  orderNote?: string;
 };
 
-export default function SizeSelector({ priceId, sizes }: Props) {
+export default function SizeSelector({ priceId, sizes, orderNote }: Props) {
   const isOneSize = sizes.length === 1 && sizes[0] === "ONE SIZE";
 
   // ONE SIZE は自動選択
@@ -76,6 +79,11 @@ export default function SizeSelector({ priceId, sizes }: Props) {
           </p>
         )}
       </div>
+
+      {/* 注意書き */}
+      <p className="font-body font-light text-[8px] tracking-[0.35em] text-white/60 leading-[2]">
+        {orderNote ?? DEFAULT_ORDER_NOTE}
+      </p>
 
       {/* ORDER — full width */}
       <button

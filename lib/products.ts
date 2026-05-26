@@ -15,6 +15,7 @@ export type Product = {
   sizes: string[];         // ["ONE SIZE"] or ["S", "M", "L", "XL"] or ["1", "2"]
   sizeGuide: SizeGuideRow[];
   ageingSample?: boolean;  // true → 9.jpg 以降に "AGEING SAMPLE" を表示
+  orderNote?: string;      // ORDERボタン上の注意書き（省略時はデフォルト文言）
 };
 
 export const products: Product[] = [
@@ -102,6 +103,7 @@ export const products: Product[] = [
       { label: "着丈", labelEn: "Length",         value: "64cm", values: ["64cm", "67cm", "70cm"] },
       { label: "袖丈", labelEn: "Sleeve Length",  value: "20cm", values: ["20cm", "20cm", "20cm"] },
     ],
+    orderNote: "受注生産のため、発送まで約2週間ほどお時間をいただきます。",
   },
   {
     slug: "shift-bag",
