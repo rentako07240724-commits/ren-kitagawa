@@ -40,9 +40,9 @@ export const products: Product[] = [
     price: 26800,
     priceId: "price_1TaeEC15Xhry8bPTs2XFYLbR",
     descriptionJa:
-      "「フレーム」という概念を纏ったデニム。シルエットを枠として捉え、身体との境界線を明確に引くことで、着用者の存在をより際立たせる。古いデニムが持つ経年変化の痕跡を意図的に残した「AGEING SAMPLE」は、時間そのものを素材として扱う試み。穿き続けることで刻まれる記憶が、ジーンズそのものの輪郭を再定義していく。",
+      "構造によって形成されたジーンズ。ダブルニーを再構築した切り替えと、身体を縁取るような構造線によって形作られたワイドジーンズ。深く大きく設計されたポケットとサイドポケットを備え、随所に打たれたリベットが機能性と存在感を補強する。背面ではポケットにも切り替えを連続させ、構造が一つのフレームとして流れるよう設計されている。ウエスト位置で着用すると整ったボリュームシルエットを描き、腰で履くことで裾に溜まりが生まれ、より重さのあるリラックスした形へ変化する。構造的でありながら、着崩される。ユーティリティと造形のあいだに存在する一本。",
     descriptionEn:
-      "Denim conceived as a frame. By treating the silhouette as a border that clearly delineates the boundary between cloth and body, the wearer's presence is made more distinct. The \"AGEING SAMPLE\" — denim that deliberately preserves the traces of time — treats ageing itself as a material. The memories worn into the fabric over continued use continually redefine the outline of the jeans themselves.",
+      "Designed through structure. Wide jeans defined by reconstructed double-knee paneling and framed seam lines across the body. Deep pockets and side storage are integrated throughout, while rivet details reinforce both function and presence. The back pocket construction continues the panel lines, allowing structure to move as one continuous frame. Worn at the waist, the silhouette falls with controlled volume. Worn lower on the hips, the fabric gathers at the hem, creating a heavier, relaxed shape. Structured, yet worn. Existing between utility and form.",
     sizes: ["1", "2"],
     sizeGuide: [
       { label: "ウエスト", labelEn: "Waist",        value: "80cm",  values: ["80cm",  "85cm"]  },
