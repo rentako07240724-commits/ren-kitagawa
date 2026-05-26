@@ -6,15 +6,24 @@ import Nav from "@/app/components/Nav";
 import Loader from "@/app/components/Loader";
 import CollectionSlider from "@/app/components/CollectionSlider";
 
-/** public/images/collection/ 直下の画像（スワイプ用） */
+/** public/images/collection/26ss/ の画像（スワイプ用）— main先頭・数値昇順・最大5枚 */
 function getCollectionImages(): string[] {
-  const dir = path.join(process.cwd(), "public", "images", "collection");
+  const dir = path.join(process.cwd(), "public", "images", "collection", "26ss");
   try {
-    return fs
+    const files = fs
       .readdirSync(dir)
       .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f))
-      .sort()
-      .map((f) => `/images/collection/${f}`);
+      .sort((a, b) => {
+        const aIsMain = a.toLowerCase().startsWith("main");
+        const bIsMain = b.toLowerCase().startsWith("main");
+        if (aIsMain && !bIsMain) return -1;
+        if (!aIsMain && bIsMain) return 1;
+        const aNum = parseInt(a, 10);
+        const bNum = parseInt(b, 10);
+        if (!isNaN(aNum) && !isNaN(bNum)) return aNum - bNum;
+        return a.localeCompare(b);
+      });
+    return files.slice(0, 5).map((f) => `/images/collection/26ss/${f}`);
   } catch {
     return [];
   }
@@ -115,11 +124,11 @@ export default function Home() {
             placeholderCount={PLACEHOLDER_COUNT}
           />
 
-          {/* MORE button */}
-          <div className="flex justify-center mt-10">
+          {/* MORE button — スワイプエリア直下に常時表示 */}
+          <div className="flex justify-center mt-8">
             <Link
               href="/collection/ss2026"
-              className="font-body font-light text-[8px] tracking-[0.45em] text-white uppercase border-[0.5px] border-white px-8 py-3 hover:bg-white hover:text-black transition-colors duration-300"
+              className="font-body font-light text-[8px] tracking-[0.5em] text-white uppercase border-[0.5px] border-white px-8 py-3 hover:bg-white hover:text-black transition-colors duration-300"
             >
               MORE
             </Link>
