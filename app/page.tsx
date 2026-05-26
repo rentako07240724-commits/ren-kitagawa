@@ -20,14 +20,23 @@ function getCollectionImages(): string[] {
   }
 }
 
-/** 各サブフォルダの先頭画像（サムネイル用） */
+/** 各サブフォルダの先頭画像（サムネイル用）— main.* を優先 */
 function getFirstImage(subfolder: string): string | null {
   const dir = path.join(process.cwd(), "public", "images", "collection", subfolder);
   try {
     const files = fs
       .readdirSync(dir)
-      .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f))
-      .sort();
+      .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f));
+    // main.* があれば最優先で返す
+    const main = files.find((f) => f.toLowerCase().startsWith("main"));
+    if (main) return `/images/collection/${subfolder}/${main}`;
+    // なければ数値昇順の先頭
+    files.sort((a, b) => {
+      const aNum = parseInt(a, 10);
+      const bNum = parseInt(b, 10);
+      if (!isNaN(aNum) && !isNaN(bNum)) return aNum - bNum;
+      return a.localeCompare(b);
+    });
     return files.length > 0 ? `/images/collection/${subfolder}/${files[0]}` : null;
   } catch {
     return null;
