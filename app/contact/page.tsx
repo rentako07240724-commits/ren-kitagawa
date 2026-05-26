@@ -44,12 +44,12 @@ export default function ContactPage() {
             Shop
           </p>
           <a
-            href="https://ren-kitagawa04.stores.jp"
+            href="https://ren-kitagawa.vercel.app/shop"
             target="_blank"
             rel="noopener noreferrer"
             className="font-body font-light text-[11px] tracking-[0.25em] text-white hover:text-white/50 transition-colors duration-300"
           >
-            ren-kitagawa04.stores.jp
+            ren-kitagawa.vercel.app/shop
           </a>
         </div>
 
