@@ -108,10 +108,17 @@ export const products: Product[] = [
     name: "Shift Bag",
     price: 26000,
     priceId: "price_1TaeEH15Xhry8bPT923uiRgQ",
-    descriptionJa: "— 商品説明は近日公開予定 —",
-    descriptionEn: "— Description coming soon —",
+    descriptionJa:
+      "静かな違和感によって形成されたバッグ。直線的な切り替えと工業用パーツによって構成された、大容量のショルダーバッグ。本来機能として存在する要素を造形の一部として再解釈し、実用性とデザイン性を静かな構造の中で共存させている。ショルダー部分には滑り止めのチューブを採用し、身体の動きに沿いながらもズレ落ちにくい構造に設計されている。日常に溶け込みながら、わずかにズレている。機能と造形のあいだに存在するバッグ。",
+    descriptionEn:
+      "Designed through subtle disruption. A large-capacity shoulder bag defined by structured linear panel lines and industrial components. Functional parts are reinterpreted as elements of form, balancing utility and design through a quiet, structured silhouette. The shoulder strap features an anti-slip tube construction, allowing the bag to remain securely in place while moving naturally with the body. Worn daily, yet slightly displaced. Existing between function and form.",
     sizes: ["ONE SIZE"],
-    sizeGuide: [],
+    sizeGuide: [
+      { label: "ベルト", labelEn: "Strap",  value: "72cm" },
+      { label: "高さ",   labelEn: "Height", value: "37cm" },
+      { label: "幅",     labelEn: "Width",  value: "48cm" },
+      { label: "奥行き", labelEn: "Depth",  value: "15cm" },
+    ],
   },
 ];
 
