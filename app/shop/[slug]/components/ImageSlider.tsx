@@ -3,8 +3,13 @@
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 
+export type SlideImage = {
+  src: string;
+  label?: string; // e.g. "AGEING SAMPLE"
+};
+
 type Props = {
-  images: string[];
+  images: SlideImage[];
   productName: string;
 };
 
@@ -34,19 +39,28 @@ export default function ImageSlider({ images, productName }: Props) {
         ref={scrollRef}
         className="flex overflow-x-scroll snap-x snap-mandatory scrollbar-none"
       >
-        {images.map((src, i) => (
+        {images.map((slide, i) => (
           <div
             key={i}
             className="flex-none w-full h-screen snap-start relative"
           >
             <Image
-              src={src}
+              src={slide.src}
               alt={`${productName} ${i + 1}`}
               fill
               className="object-cover object-center"
               quality={100}
               priority={i === 0}
             />
+            {/* Per-slide label overlay (e.g. AGEING SAMPLE) */}
+            {slide.label && (
+              <span
+                className="absolute font-body font-light text-[7px] tracking-[0.45em] text-white/60 uppercase pointer-events-none"
+                style={{ bottom: "20px", left: "20px" }}
+              >
+                {slide.label}
+              </span>
+            )}
           </div>
         ))}
       </div>

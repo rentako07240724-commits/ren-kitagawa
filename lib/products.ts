@@ -1,7 +1,8 @@
 export type SizeGuideRow = {
   label: string;
   labelEn: string;
-  value: string;
+  value: string;         // single-size products
+  values?: string[];     // multi-size products (e.g. Frame Jeans: ["80cm", "85cm"])
 };
 
 export type Product = {
@@ -38,10 +39,17 @@ export const products: Product[] = [
     name: "Frame Jeans",
     price: 26800,
     priceId: "price_1TaeEC15Xhry8bPTs2XFYLbR",
-    descriptionJa: "— 商品説明は近日公開予定 —",
-    descriptionEn: "— Description coming soon —",
-    sizes: ["S", "M", "L", "XL"],
-    sizeGuide: [],
+    descriptionJa:
+      "「フレーム」という概念を纏ったデニム。シルエットを枠として捉え、身体との境界線を明確に引くことで、着用者の存在をより際立たせる。古いデニムが持つ経年変化の痕跡を意図的に残した「AGEING SAMPLE」は、時間そのものを素材として扱う試み。穿き続けることで刻まれる記憶が、ジーンズそのものの輪郭を再定義していく。",
+    descriptionEn:
+      "Denim conceived as a frame. By treating the silhouette as a border that clearly delineates the boundary between cloth and body, the wearer's presence is made more distinct. The \"AGEING SAMPLE\" — denim that deliberately preserves the traces of time — treats ageing itself as a material. The memories worn into the fabric over continued use continually redefine the outline of the jeans themselves.",
+    sizes: ["1", "2"],
+    sizeGuide: [
+      { label: "ウエスト", labelEn: "Waist",        value: "80cm",  values: ["80cm",  "85cm"]  },
+      { label: "股上",     labelEn: "Rise",         value: "33cm",  values: ["33cm",  "33cm"]  },
+      { label: "股下",     labelEn: "Inseam",       value: "74cm",  values: ["74cm",  "77cm"]  },
+      { label: "総丈",     labelEn: "Total Length", value: "110cm", values: ["110cm", "113cm"] },
+    ],
   },
   {
     slug: "frow-jeans",

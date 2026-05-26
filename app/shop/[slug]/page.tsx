@@ -3,14 +3,14 @@ import path from "path";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { products } from "@/lib/products";
-import ImageSlider from "./components/ImageSlider";
+import ImageSlider, { SlideImage } from "./components/ImageSlider";
 import SizeSelector from "./components/SizeSelector";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
 }
 
-function getImages(slug: string): string[] {
+function getImages(slug: string): SlideImage[] {
   const dir = path.join(process.cwd(), "public", "images", "products", slug);
   try {
     const files = fs
@@ -24,7 +24,14 @@ function getImages(slug: string): string[] {
         if (!aIsMain && bIsMain) return 1;
         return a.localeCompare(b);
       });
-    return files.map((f) => `/images/products/${slug}/${f}`);
+
+    return files.map((f) => {
+      const base = f.replace(/\.[^.]+$/, ""); // strip extension
+      const num = parseInt(base, 10);
+      // 9.jpg 以降は AGEING SAMPLE ラベルを付与
+      const label = !isNaN(num) && num >= 9 ? "AGEING SAMPLE" : undefined;
+      return { src: `/images/products/${slug}/${f}`, label };
+    });
   } catch {
     return [];
   }
@@ -124,9 +131,21 @@ export default async function ProductPage({
                     <td className="font-body font-light text-[8px] tracking-[0.25em] text-white/45 uppercase py-3.5 pr-4">
                       {row.label} / {row.labelEn}
                     </td>
-                    <td className="text-right font-body font-light text-[9px] tracking-[0.2em] text-white/65 py-3.5">
-                      {row.value}
-                    </td>
+                    {row.values
+                      ? row.values.map((v, j) => (
+                          <td
+                            key={j}
+                            className="text-right font-body font-light text-[9px] tracking-[0.2em] text-white/65 py-3.5"
+                          >
+                            {v}
+                          </td>
+                        ))
+                      : (
+                          <td className="text-right font-body font-light text-[9px] tracking-[0.2em] text-white/65 py-3.5">
+                            {row.value}
+                          </td>
+                        )
+                    }
                   </tr>
                 ))}
               </tbody>
