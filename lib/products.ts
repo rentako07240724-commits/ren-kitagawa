@@ -56,10 +56,17 @@ export const products: Product[] = [
     name: "Frow Jeans",
     price: 24000,
     priceId: "price_1TaeEE15Xhry8bPTXK92P1uR",
-    descriptionJa: "— 商品説明は近日公開予定 —",
-    descriptionEn: "— Description coming soon —",
-    sizes: ["S", "M", "L", "XL"],
-    sizeGuide: [],
+    descriptionJa:
+      "動きに寄り添うためのジーンズ。身体を流れるように走る曲線の切り替えによって構成されたセミフレアジーンズ。背面では曲線の切り替えとポケットを一つの連続した線として繋げ、構造とシルエットの境界を曖昧にしながら身体の動きをなぞっていく。ウエスト位置で着用すると美しいセミフレアシルエットを描き、腰で履くことで裾に自然な溜まりが生まれ、よりリラックスした流れを形成する。静かに身体に沿いながら、流れる線がわずかな動きの感覚を生み出す。制御と流動性のあいだに存在する一本。",
+    descriptionEn:
+      "Designed to follow movement. Semi-flare jeans shaped by flowing curved panel lines that move naturally across the body. The back construction connects curved seams and pockets as one continuous line — tracing movement while softening the boundary between structure and silhouette. Worn at the waist, the silhouette falls into a clean semi-flare. Worn lower on the hips, the fabric gathers softly at the hem, creating a more relaxed flow. Quietly following the body, the flowing lines create a subtle sense of motion, existing between control and fluidity.",
+    sizes: ["1", "2"],
+    sizeGuide: [
+      { label: "ウエスト", labelEn: "Waist",        value: "80cm",  values: ["80cm",  "86cm"]  },
+      { label: "股上",     labelEn: "Rise",         value: "24cm",  values: ["24cm",  "24cm"]  },
+      { label: "股下",     labelEn: "Inseam",       value: "78cm",  values: ["78cm",  "80cm"]  },
+      { label: "総丈",     labelEn: "Total Length", value: "106cm", values: ["106cm", "108cm"] },
+    ],
   },
   {
     slug: "vector-ma1",
