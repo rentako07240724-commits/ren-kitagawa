@@ -6,6 +6,8 @@ import { products } from "@/lib/products";
 import ImageSlider, { SlideImage } from "./components/ImageSlider";
 import SizeSelector from "./components/SizeSelector";
 
+export const dynamicParams = false; // generateStaticParams 以外のパスは 404
+
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
 }
