@@ -92,10 +92,16 @@ export const products: Product[] = [
     name: "Core Tee",
     price: 4600,
     priceId: "price_1TaeEG15Xhry8bPThOzdI35s",
-    descriptionJa: "— 商品説明は近日公開予定 —",
-    descriptionEn: "— Description coming soon —",
-    sizes: ["S", "M", "L", "XL"],
-    sizeGuide: [],
+    descriptionJa:
+      "静かな基盤として設計されたTシャツ。CODE_04グラフィックと\"NO SHOUT STILL STAYS\"の言葉を配し、静かな存在感を形にした一着。身幅をタイトに設計することで、身体に静かに沿うクリーンなシルエットを形成。強く主張するのではなく、沈黙の中に意思を残しながら静かに在り続けることを表現している。シンプルでありながら、残り続ける。静止と表現のあいだに存在する一着。",
+    descriptionEn:
+      "Designed as a quiet foundation. A T-shirt built around subtle presence, featuring the CODE_04 graphic and the phrase \"NO SHOUT STILL STAYS.\" The body is designed with a slimmer width, creating a cleaner silhouette that sits quietly against the body. Rather than demanding attention, it remains — carrying a quiet sense of persistence through silence. Worn simply, yet remaining. Existing between stillness and expression.",
+    sizes: ["1", "2", "3"],
+    sizeGuide: [
+      { label: "身幅", labelEn: "Width",          value: "44cm", values: ["44cm", "47cm", "50cm"] },
+      { label: "着丈", labelEn: "Length",         value: "64cm", values: ["64cm", "67cm", "70cm"] },
+      { label: "袖丈", labelEn: "Sleeve Length",  value: "20cm", values: ["20cm", "20cm", "20cm"] },
+    ],
   },
   {
     slug: "shift-bag",
