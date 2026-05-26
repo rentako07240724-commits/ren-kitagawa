@@ -4,12 +4,16 @@ import { useState } from "react";
 
 type Props = {
   priceId: string;
+  sizes: string[];
 };
 
-const SIZES = ["S", "M", "L", "XL"] as const;
+export default function SizeSelector({ priceId, sizes }: Props) {
+  const isOneSize = sizes.length === 1 && sizes[0] === "ONE SIZE";
 
-export default function SizeSelector({ priceId }: Props) {
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  // ONE SIZE は自動選択
+  const [selectedSize, setSelectedSize] = useState<string | null>(
+    isOneSize ? "ONE SIZE" : null
+  );
   const [loading, setLoading] = useState(false);
 
   const handleOrder = async () => {
@@ -32,40 +36,52 @@ export default function SizeSelector({ priceId }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-7">
 
-      {/* Size buttons */}
+      {/* Size label */}
       <div>
         <p className="font-body font-light text-[8px] tracking-[0.45em] text-white/30 uppercase mb-4">
           Size
         </p>
-        <div className="flex gap-3">
-          {SIZES.map((size) => (
-            <button
-              key={size}
-              onClick={() => setSelectedSize(size)}
-              className={`font-body font-light text-[9px] tracking-[0.2em] uppercase border-[0.5px] w-12 h-10 transition-colors duration-200 ${
-                selectedSize === size
-                  ? "border-white bg-white text-black"
-                  : "border-white/30 text-white/50 hover:border-white hover:text-white"
-              }`}
-            >
-              {size}
-            </button>
-          ))}
-        </div>
-        {!selectedSize && (
+
+        {isOneSize ? (
+          /* ONE SIZE — 選択済み表示 */
+          <div className="border-[0.5px] border-white px-5 py-2.5 w-fit">
+            <span className="font-body font-light text-[9px] tracking-[0.3em] text-white uppercase">
+              ONE SIZE
+            </span>
+          </div>
+        ) : (
+          /* S / M / L / XL */
+          <div className="flex flex-wrap gap-3">
+            {sizes.map((size) => (
+              <button
+                key={size}
+                onClick={() => setSelectedSize(size)}
+                className={`font-body font-light text-[9px] tracking-[0.2em] uppercase border-[0.5px] w-12 h-10 transition-colors duration-200 ${
+                  selectedSize === size
+                    ? "border-white bg-white text-black"
+                    : "border-white/30 text-white/50 hover:border-white hover:text-white"
+                }`}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {!isOneSize && !selectedSize && (
           <p className="font-body font-light text-[8px] tracking-[0.3em] text-white/20 uppercase mt-3">
             Please select a size
           </p>
         )}
       </div>
 
-      {/* ORDER button */}
+      {/* ORDER — full width */}
       <button
         onClick={handleOrder}
         disabled={!selectedSize || loading}
-        className="font-body font-light text-[8px] tracking-[0.45em] text-white uppercase border-[0.5px] border-white px-8 py-3 w-fit hover:bg-white hover:text-black transition-colors duration-300 disabled:opacity-25 disabled:cursor-not-allowed"
+        className="w-full font-body font-light text-[8px] tracking-[0.5em] text-white uppercase bg-black border-[0.5px] border-white py-4 hover:bg-white hover:text-black transition-colors duration-300 disabled:opacity-25 disabled:cursor-not-allowed"
       >
         {loading ? "..." : "ORDER"}
       </button>

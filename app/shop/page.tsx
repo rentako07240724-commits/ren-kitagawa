@@ -4,16 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { products } from "@/lib/products";
 
+/** サムネイル: subfolder の main.* → flat ファイル の順で探す */
 function getProductImage(slug: string): string | null {
-  for (const ext of ["jpg", "jpeg", "png", "webp", "avif"]) {
-    const file = path.join(
-      process.cwd(),
-      "public",
-      "images",
-      "products",
-      `${slug}.${ext}`
-    );
-    if (fs.existsSync(file)) return `/images/products/${slug}.${ext}`;
+  const exts = ["jpg", "jpeg", "png", "webp", "avif"];
+  // 1) public/images/products/[slug]/main.*
+  for (const ext of exts) {
+    const f = path.join(process.cwd(), "public", "images", "products", slug, `main.${ext}`);
+    if (fs.existsSync(f)) return `/images/products/${slug}/main.${ext}`;
+  }
+  // 2) public/images/products/[slug].*（flat）
+  for (const ext of exts) {
+    const f = path.join(process.cwd(), "public", "images", "products", `${slug}.${ext}`);
+    if (fs.existsSync(f)) return `/images/products/${slug}.${ext}`;
   }
   return null;
 }
@@ -68,7 +70,7 @@ export default function ShopPage() {
                     src={img}
                     alt={product.name}
                     fill
-                    className="object-contain transition-opacity duration-500 group-hover:opacity-70"
+                    className="object-cover object-center transition-opacity duration-500 group-hover:opacity-70"
                     quality={100}
                   />
                 )}
