@@ -22,7 +22,7 @@ export const products: Product[] = [
     slug: "shy-hoodie",
     name: "Shy Hoodie",
     price: 31000,
-    priceId: "price_1TbNHJ04FSXNU1UEA2dZxwI4",
+    priceId: "price_1TbNNF04FSXNU1UEJcNLaMr2",
     descriptionJa:
       "顔を隠せるフェイスカバーを備えたフーディー。右胸にはイヤホンなどを掛けられるループを配置し、自分だけの時間へと入り込むための機能を付加。フェイスカバーはボタンの付け替えによって好みのデザインへカスタマイズが可能で、着用者自身がその形を再解釈できる仕様となっている。背面には螺旋状のタックを施し、音に没入しながら内側の世界へと加速していく過程を表現しています。静かに閉じながら、自分の輪郭を深めていく一着",
     descriptionEn:
@@ -39,7 +39,7 @@ export const products: Product[] = [
     slug: "frame-jeans",
     name: "Frame Jeans",
     price: 26800,
-    priceId: "price_1TbNHO04FSXNU1UENud8AVex",
+    priceId: "price_1TbNNG04FSXNU1UEWXGfK0Vk",
     descriptionJa:
       "構造によって形成されたジーンズ。ダブルニーを再構築した切り替えと、身体を縁取るような構造線によって形作られたワイドジーンズ。深く大きく設計されたポケットとサイドポケットを備え、随所に打たれたリベットが機能性と存在感を補強する。背面ではポケットにも切り替えを連続させ、構造が一つのフレームとして流れるよう設計されている。ウエスト位置で着用すると整ったボリュームシルエットを描き、腰で履くことで裾に溜まりが生まれ、より重さのあるリラックスした形へ変化する。構造的でありながら、着崩される。ユーティリティと造形のあいだに存在する一本。",
     descriptionEn:
@@ -57,7 +57,7 @@ export const products: Product[] = [
     slug: "frow-jeans",
     name: "Frow Jeans",
     price: 24000,
-    priceId: "price_1TbNHP04FSXNU1UEnVdZ9nuE",
+    priceId: "price_1TbNNI04FSXNU1UEk1Qv4ISm",
     descriptionJa:
       "動きに寄り添うためのジーンズ。身体を流れるように走る曲線の切り替えによって構成されたセミフレアジーンズ。背面では曲線の切り替えとポケットを一つの連続した線として繋げ、構造とシルエットの境界を曖昧にしながら身体の動きをなぞっていく。ウエスト位置で着用すると美しいセミフレアシルエットを描き、腰で履くことで裾に自然な溜まりが生まれ、よりリラックスした流れを形成する。静かに身体に沿いながら、流れる線がわずかな動きの感覚を生み出す。制御と流動性のあいだに存在する一本。",
     descriptionEn:
@@ -74,7 +74,7 @@ export const products: Product[] = [
     slug: "vector-ma1",
     name: "Vector MA-1",
     price: 38000,
-    priceId: "price_1TbNHR04FSXNU1UEdxItZz42",
+    priceId: "price_1TbNNK04FSXNU1UEU4udG7y9",
     descriptionJa:
       "方向性によって形成されたMA-1。身体を横断する直線的な切り替えによって構成された、ボリュームのあるMA-1。切り替えに沿ってポケットを配置し、袖に手を入れた際には身頃のラインと繋がるよう構造を調整。全体が一つの方向性として流れるよう設計されている。また、本来のMA-1には見られないサムホール仕様を加え、機能とシルエットの両方を拡張した。シンプルでありながら、静かに構築されている。ボリュームと精密さのあいだに存在する一着。",
     descriptionEn:
@@ -91,7 +91,7 @@ export const products: Product[] = [
     slug: "core-tee",
     name: "Core Tee",
     price: 4600,
-    priceId: "price_1TbNHS04FSXNU1UESxERFTSf",
+    priceId: "price_1TbNNM04FSXNU1UEgsS2vx9f",
     descriptionJa:
       "静かな基盤として設計されたTシャツ。CODE_04グラフィックと\"NO SHOUT STILL STAYS\"の言葉を配し、静かな存在感を形にした一着。身幅をタイトに設計することで、身体に静かに沿うクリーンなシルエットを形成。強く主張するのではなく、沈黙の中に意思を残しながら静かに在り続けることを表現している。シンプルでありながら、残り続ける。静止と表現のあいだに存在する一着。",
     descriptionEn:
@@ -107,7 +107,7 @@ export const products: Product[] = [
     slug: "shift-bag",
     name: "Shift Bag",
     price: 26000,
-    priceId: "price_1TbNHU04FSXNU1UESdNIAwsn",
+    priceId: "price_1TbNNO04FSXNU1UE3x9l7XWv",
     descriptionJa:
       "静かな違和感によって形成されたバッグ。直線的な切り替えと工業用パーツによって構成された、大容量のショルダーバッグ。本来機能として存在する要素を造形の一部として再解釈し、実用性とデザイン性を静かな構造の中で共存させている。ショルダー部分には滑り止めのチューブを採用し、身体の動きに沿いながらもズレ落ちにくい構造に設計されている。日常に溶け込みながら、わずかにズレている。機能と造形のあいだに存在するバッグ。",
     descriptionEn:
