@@ -75,10 +75,17 @@ export const products: Product[] = [
     name: "Vector MA-1",
     price: 38000,
     priceId: "price_1TaeEE15Xhry8bPTXEU3mUVm",
-    descriptionJa: "— 商品説明は近日公開予定 —",
-    descriptionEn: "— Description coming soon —",
-    sizes: ["S", "M", "L", "XL"],
-    sizeGuide: [],
+    descriptionJa:
+      "方向性によって形成されたMA-1。身体を横断する直線的な切り替えによって構成された、ボリュームのあるMA-1。切り替えに沿ってポケットを配置し、袖に手を入れた際には身頃のラインと繋がるよう構造を調整。全体が一つの方向性として流れるよう設計されている。また、本来のMA-1には見られないサムホール仕様を加え、機能とシルエットの両方を拡張した。シンプルでありながら、静かに構築されている。ボリュームと精密さのあいだに存在する一着。",
+    descriptionEn:
+      "Designed through direction. A voluminous MA-1 defined by structured linear panel lines across the body. Pockets are integrated into the seams, while the sleeve construction is adjusted to connect with the body lines when hands are placed inside — allowing the structure to flow as one continuous direction. Thumbhole cuffs, uncommon to a traditional MA-1, extend both function and silhouette. Worn simply, yet quietly constructed. Existing between volume and precision.",
+    sizes: ["ONE SIZE"],
+    sizeGuide: [
+      { label: "着丈", labelEn: "Length",        value: "70cm" },
+      { label: "身幅", labelEn: "Width",          value: "75cm" },
+      { label: "肩幅", labelEn: "Shoulder Width", value: "58cm" },
+      { label: "袖丈", labelEn: "Sleeve Length",  value: "66cm" },
+    ],
   },
   {
     slug: "core-tee",
