@@ -124,16 +124,10 @@ export default function Home() {
 
         {/* ── 3. SS 2026 スワイプ式写真 ─────────────────── */}
         <section className="pb-16 md:pb-24">
-          <div className="px-6 md:px-12 pt-20 md:pt-[80px] mb-6">
-            <p className="font-body font-light text-[10px] tracking-[0.5em] text-white uppercase mb-8">
+          <div className="px-6 md:px-12 pt-20 md:pt-[80px] mb-10 md:mb-12">
+            <p className="font-body font-light text-[10px] tracking-[0.5em] text-white uppercase">
               SS 2026
             </p>
-            <Link
-              href="/shop"
-              className="block w-full font-body font-light text-[8px] tracking-[0.5em] text-white uppercase border-[0.5px] border-white py-4 text-center hover:bg-white hover:text-black transition-colors duration-300"
-            >
-              SHOP SS 2026
-            </Link>
           </div>
           <CollectionSlider
             images={collectionImages}
