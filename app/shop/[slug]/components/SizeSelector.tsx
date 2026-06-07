@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const DEFAULT_ORDER_NOTE = "受注生産のため、発送まで1〜2ヶ月ほどお時間をいただきます。";
+const DEFAULT_ORDER_NOTE = "受注生産のため、発送まで1〜2週間ほどお時間をいただきます。";
 
 type Props = {
   priceId: string;
