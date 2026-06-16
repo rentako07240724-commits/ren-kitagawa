@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { priceId, size } = await req.json();
+    const { priceId, size, product } = await req.json();
 
     const proto = req.headers.get("x-forwarded-proto") ?? "https";
     const host  = req.headers.get("host") ?? "ren-kitagawa.vercel.app";
@@ -28,7 +28,10 @@ export async function POST(req: NextRequest) {
     params.append("phone_number_collection[enabled]", "true");
     params.append("billing_address_collection", "required");
     if (size) {
-      params.append("metadata[size]", size);
+      params.append("metadata[サイズ]", size);
+    }
+    if (product) {
+      params.append("metadata[商品名]", product);
     }
 
     const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {

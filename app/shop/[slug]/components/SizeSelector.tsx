@@ -8,9 +8,10 @@ type Props = {
   priceId: string;
   sizes: string[];
   orderNote?: string;
+  productName: string;
 };
 
-export default function SizeSelector({ priceId, sizes, orderNote }: Props) {
+export default function SizeSelector({ priceId, sizes, orderNote, productName }: Props) {
   const isOneSize = sizes.length === 1 && sizes[0] === "ONE SIZE";
 
   // ONE SIZE は自動選択
@@ -26,7 +27,7 @@ export default function SizeSelector({ priceId, sizes, orderNote }: Props) {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId, size: selectedSize }),
+        body: JSON.stringify({ priceId, size: selectedSize, product: productName }),
       });
       const { url, error } = await res.json();
       if (error) throw new Error(error);
