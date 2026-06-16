@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
     params.append("mode", "payment");
     params.append("success_url", `${base}/shop?success=1`);
     params.append("cancel_url",  `${base}/shop`);
+    params.append("shipping_address_collection[allowed_countries][]", "JP");
     if (size) {
       params.append("metadata[size]", size);
     }
