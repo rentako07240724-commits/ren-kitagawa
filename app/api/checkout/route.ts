@@ -18,9 +18,7 @@ export async function POST(req: NextRequest) {
     const base  = `${proto}://${host}`;
 
     const params = new URLSearchParams();
-    params.append("automatic_payment_methods[enabled]", "true");
-    params.append("automatic_payment_methods[allow_redirects]", "never");
-    params.append("customer_creation", "always");
+    params.append("payment_method_types[]", "card");
     params.append("line_items[0][price]", priceId);
     params.append("line_items[0][quantity]", "1");
     params.append("mode", "payment");
@@ -28,6 +26,7 @@ export async function POST(req: NextRequest) {
     params.append("cancel_url",  `${base}/shop`);
     params.append("shipping_address_collection[allowed_countries][]", "JP");
     params.append("phone_number_collection[enabled]", "true");
+    params.append("billing_address_collection", "required");
     if (size) {
       params.append("metadata[サイズ]", size);
     }
