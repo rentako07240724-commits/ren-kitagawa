@@ -48,6 +48,17 @@ export async function POST(req: NextRequest) {
     if (product) {
       params.append("metadata[商品名]", product);
     }
+    // PaymentIntent にも同じメタデータを付与（取引一覧・明細に反映）
+    const description = product && size ? `${product} (サイズ: ${size})` : (product ?? undefined);
+    if (description) {
+      params.append("payment_intent_data[description]", description);
+    }
+    if (size) {
+      params.append("payment_intent_data[metadata][サイズ]", size);
+    }
+    if (product) {
+      params.append("payment_intent_data[metadata][商品名]", product);
+    }
 
     const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
