@@ -18,8 +18,7 @@ export async function POST(req: NextRequest) {
     const base  = `${proto}://${host}`;
 
     const params = new URLSearchParams();
-    params.append("automatic_payment_methods[enabled]", "true");
-    params.append("customer_creation", "always");
+    params.append("payment_method_types[]", "card");
     params.append("line_items[0][price]", priceId);
     params.append("line_items[0][quantity]", "1");
     params.append("mode", "payment");
