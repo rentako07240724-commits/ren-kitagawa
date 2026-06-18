@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
 
     const params = new URLSearchParams();
     params.append("payment_method_types[]", "card");
+    params.append("payment_method_types[]", "paypay");
     params.append("line_items[0][price]", priceId);
     params.append("line_items[0][quantity]", "1");
     params.append("mode", "payment");
