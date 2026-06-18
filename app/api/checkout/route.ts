@@ -19,6 +19,10 @@ export async function POST(req: NextRequest) {
 
     const params = new URLSearchParams();
     params.append("payment_method_types[]", "card");
+    params.append("payment_method_types[]", "customer_balance");
+    params.append("payment_method_options[customer_balance][funding_type]", "bank_transfer");
+    params.append("payment_method_options[customer_balance][bank_transfer][requested_address_types][]", "zengin");
+    params.append("customer_creation", "always");
     params.append("line_items[0][price]", priceId);
     params.append("line_items[0][quantity]", "1");
     params.append("mode", "payment");
