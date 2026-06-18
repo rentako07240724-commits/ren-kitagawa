@@ -17,8 +17,23 @@ export async function POST(req: NextRequest) {
     const host  = req.headers.get("host") ?? "ren-kitagawa.vercel.app";
     const base  = `${proto}://${host}`;
 
+    // 銀行振込(customer_balance)に必要なカスタマーを事前作成
+    const customerRes = await fetch("https://api.stripe.com/v1/customers", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${key}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+    const customerData = await customerRes.json() as { id?: string };
+    const customerId = customerData.id;
+
     const params = new URLSearchParams();
     params.append("payment_method_types[]", "card");
+    params.append("payment_method_types[]", "customer_balance");
+    params.append("payment_method_options[customer_balance][funding_type]", "bank_transfer");
+    params.append("payment_method_options[customer_balance][bank_transfer][type]", "jp_bank_transfer");
+    if (customerId) params.append("customer", customerId);
     params.append("line_items[0][price]", priceId);
     params.append("line_items[0][quantity]", "1");
     params.append("mode", "payment");
