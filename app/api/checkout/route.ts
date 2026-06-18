@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { priceId, size, product } = await req.json();
+    const { priceId, size, product, amount } = await req.json();
 
     const proto = req.headers.get("x-forwarded-proto") ?? "https";
     const host  = req.headers.get("host") ?? "ren-kitagawa.vercel.app";
@@ -34,7 +34,15 @@ export async function POST(req: NextRequest) {
     params.append("payment_method_options[customer_balance][funding_type]", "bank_transfer");
     params.append("payment_method_options[customer_balance][bank_transfer][type]", "jp_bank_transfer");
     if (customerId) params.append("customer", customerId);
-    params.append("line_items[0][price]", priceId);
+    // 商品名にサイズを含めてCheckout画面に表示
+    const lineItemName = product && size ? `${product} (サイズ: ${size})` : (product ?? "REN KITAGAWA");
+    if (amount) {
+      params.append("line_items[0][price_data][currency]", "jpy");
+      params.append("line_items[0][price_data][product_data][name]", lineItemName);
+      params.append("line_items[0][price_data][unit_amount]", String(amount));
+    } else {
+      params.append("line_items[0][price]", priceId);
+    }
     params.append("line_items[0][quantity]", "1");
     params.append("mode", "payment");
     params.append("success_url", `${base}/shop?success=1`);
