@@ -22,8 +22,8 @@ export const products: Product[] = [
   {
     slug: "shy-hoodie",
     name: "Shy Hoodie",
-    price: 31000,
-    priceId: "price_1TbNNF04FSXNU1UEJcNLaMr2",
+    price: 25000,
+    priceId: "price_1TjcxW04FSXNU1UEKQXJuHN8",
     descriptionJa:
       "顔を隠せるフェイスカバーを備えたフーディー。右胸にはイヤホンなどを掛けられるループを配置し、自分だけの時間へと入り込むための機能を付加。フェイスカバーはボタンの付け替えによって好みのデザインへカスタマイズが可能で、着用者自身がその形を再解釈できる仕様となっている。背面には螺旋状のタックを施し、音に没入しながら内側の世界へと加速していく過程を表現しています。静かに閉じながら、自分の輪郭を深めていく一着",
     descriptionEn:
