@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
   outputFileTracingExcludes: {
     "*": ["public/**/*"],
   },
+  async redirects() {
+    return [
+      {
+        source: "/shop/frow-jeans",
+        destination: "/shop/flow-jeans",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

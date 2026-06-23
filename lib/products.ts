@@ -55,8 +55,8 @@ export const products: Product[] = [
     ageingSample: true,
   },
   {
-    slug: "frow-jeans",
-    name: "Frow Jeans",
+    slug: "flow-jeans",
+    name: "Flow Jeans",
     price: 24000,
     priceId: "price_1TbNNI04FSXNU1UEk1Qv4ISm",
     descriptionJa:
