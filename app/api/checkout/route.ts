@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
     const params = new URLSearchParams();
     params.append("payment_method_types[]", "card");
     params.append("payment_method_types[]", "customer_balance");
+    params.append("payment_method_types[]", "paypay");
     params.append("payment_method_options[customer_balance][funding_type]", "bank_transfer");
     params.append("payment_method_options[customer_balance][bank_transfer][type]", "jp_bank_transfer");
     if (customerId) params.append("customer", customerId);
