@@ -59,10 +59,10 @@ export default function ContactPage() {
             Mail
           </p>
           <a
-            href="mailto:ren.kitagawa@gmail.com"
+            href="mailto:ren.kitagawa03@gmail.com"
             className="font-body font-light text-[11px] tracking-[0.25em] text-white hover:text-white/50 transition-colors duration-300"
           >
-            ren.kitagawa@gmail.com
+            ren.kitagawa03@gmail.com
           </a>
         </div>
 
