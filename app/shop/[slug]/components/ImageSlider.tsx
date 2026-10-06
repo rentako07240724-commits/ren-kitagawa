@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export type SlideImage = {
   src: string;
-  label?: string; // e.g. "AGEING SAMPLE"
+  label?: string;
 };
 
 type Props = {
@@ -29,20 +29,20 @@ export default function ImageSlider({ images, productName }: Props) {
   }, []);
 
   if (images.length === 0) {
-    return <div className="w-full h-screen bg-[#0d0d0d]" />;
+    return <div className="w-full h-screen md:h-full bg-[#0d0d0d]" />;
   }
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       {/* Scroll container */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-scroll snap-x snap-mandatory scrollbar-none"
+        className="flex overflow-x-scroll snap-x snap-mandatory scrollbar-none h-screen md:h-full"
       >
         {images.map((slide, i) => (
           <div
             key={i}
-            className="flex-none w-full h-screen snap-start relative"
+            className="flex-none w-full h-screen md:h-full snap-start relative"
           >
             <Image
               src={slide.src}
@@ -52,7 +52,6 @@ export default function ImageSlider({ images, productName }: Props) {
               quality={100}
               priority={i === 0}
             />
-            {/* Per-slide label overlay (e.g. AGEING SAMPLE) */}
             {slide.label && (
               <span
                 className="absolute font-body font-light text-[7px] tracking-[0.45em] text-white/60 uppercase pointer-events-none"
