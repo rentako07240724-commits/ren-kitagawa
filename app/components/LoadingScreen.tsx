@@ -8,12 +8,19 @@ function randomChar() {
   return CHARS[Math.floor(Math.random() * CHARS.length)];
 }
 
+function noisyText(text: string, intensity: number) {
+  return text.split("").map((char) =>
+    char !== " " && Math.random() < intensity ? randomChar() : char
+  ).join("");
+}
+
 export default function LoadingScreen() {
   const [visible, setVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showBrand, setShowBrand] = useState(false);
   const [grid, setGrid] = useState<string[][]>([]);
+  const [brandText, setBrandText] = useState("REN KITAGAWA");
 
   useEffect(() => {
     if (sessionStorage.getItem("loaded")) {
@@ -21,15 +28,13 @@ export default function LoadingScreen() {
       return;
     }
 
-    // グリッドサイズを計算
-    const cols = Math.ceil(window.innerWidth / 14);
-    const rows = Math.ceil(window.innerHeight / 22);
+    const cols = Math.ceil((window.innerWidth - 80) / 14);
+    const rows = Math.ceil((window.innerHeight - 80) / 22);
     const initial = Array.from({ length: rows }, () =>
       Array.from({ length: cols }, () => randomChar())
     );
     setGrid(initial);
 
-    // 全セルをランダムに高速更新
     const gridInterval = setInterval(() => {
       setGrid((prev) =>
         prev.map((row) => row.map(() => randomChar()))
@@ -45,14 +50,15 @@ export default function LoadingScreen() {
 
     const brandTimer = setTimeout(() => {
       clearInterval(gridInterval);
+      setGrid([]);
       setShowBrand(true);
     }, 1800);
 
-    const fadeTimer = setTimeout(() => setFadeOut(true), 2800);
+    const fadeTimer = setTimeout(() => setFadeOut(true), 3200);
     const hideTimer = setTimeout(() => {
       setVisible(false);
       sessionStorage.setItem("loaded", "1");
-    }, 3400);
+    }, 3800);
 
     return () => {
       clearInterval(gridInterval);
@@ -62,6 +68,22 @@ export default function LoadingScreen() {
       clearTimeout(hideTimer);
     };
   }, []);
+
+  // ブランド名ノイズアニメーション
+  useEffect(() => {
+    if (!showBrand) return;
+    let count = 0;
+    const noiseInterval = setInterval(() => {
+      const intensity = Math.max(0, 0.6 - count * 0.05);
+      setBrandText(noisyText("REN KITAGAWA", intensity));
+      count++;
+      if (count > 20) {
+        setBrandText("REN KITAGAWA");
+        clearInterval(noiseInterval);
+      }
+    }, 60);
+    return () => clearInterval(noiseInterval);
+  }, [showBrand]);
 
   if (!visible) return null;
 
@@ -75,16 +97,18 @@ export default function LoadingScreen() {
         overflow: "hidden",
         transition: "opacity 0.6s ease",
         opacity: fadeOut ? 0 : 1,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      {!showBrand && (
+      {grid.length > 0 && (
         <div
           style={{
-            position: "absolute",
-            inset: 0,
             display: "flex",
             flexDirection: "column",
             lineHeight: "22px",
+            padding: "40px",
           }}
         >
           {grid.map((row, ri) => (
@@ -94,7 +118,7 @@ export default function LoadingScreen() {
                   key={ci}
                   style={{
                     width: "14px",
-                    color: `rgba(30, 80, 180, ${0.2 + Math.random() * 0.8})`,
+                    color: `rgba(30, 80, 180, ${0.15 + Math.random() * 0.7})`,
                     fontSize: "13px",
                     fontFamily: "monospace",
                     textAlign: "center",
@@ -111,26 +135,23 @@ export default function LoadingScreen() {
       {showBrand && (
         <div
           style={{
-            position: "absolute",
-            inset: 0,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
             gap: "1.5rem",
-            animation: "fadeIn 0.5s ease forwards",
+            animation: "fadeIn 0.4s ease forwards",
           }}
         >
           <div
             style={{
               color: "#1e50b4",
-              fontSize: "clamp(18px, 4vw, 32px)",
+              fontSize: "clamp(28px, 6vw, 52px)",
               letterSpacing: "0.4em",
               fontFamily: "var(--font-archivo-black), monospace",
               fontWeight: 900,
             }}
           >
-            REN KITAGAWA
+            {brandText}
           </div>
           <div
             style={{
