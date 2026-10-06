@@ -122,6 +122,32 @@ export default function Home() {
           </Link>
         </section>
 
+        {/* ── 2.7. COATED EDITION 告知 ─────────────────── */}
+        <section className="border-t border-white/8 px-6 md:px-12 py-20 md:py-28 flex flex-col gap-10">
+          <div className="flex flex-col gap-4">
+            <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/30 uppercase">
+              Coated Denim
+            </p>
+            <h2 className="font-heading text-[clamp(2rem,8vw,5rem)] uppercase leading-[0.85]">
+              Frame Jeans<br />/ Flow Jeans
+            </h2>
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="font-body font-light text-[8px] tracking-[0.45em] text-white/55 uppercase">
+              10.15 — One Day Only
+            </p>
+            <p className="font-body font-light text-[8px] tracking-[0.45em] text-white/55 uppercase">
+              Online Order
+            </p>
+          </div>
+          <Link
+            href="/shop"
+            className="w-full font-body font-light text-[8px] tracking-[0.5em] text-white uppercase border-[0.5px] border-white py-4 text-center hover:bg-white hover:text-black transition-colors duration-300"
+          >
+            View →
+          </Link>
+        </section>
+
         {/* ── 3. SS 2026 スワイプ式写真 ─────────────────── */}
         <section className="pb-16 md:pb-24">
           <div className="px-6 md:px-12 pt-20 md:pt-[80px] mb-10 md:mb-12">
