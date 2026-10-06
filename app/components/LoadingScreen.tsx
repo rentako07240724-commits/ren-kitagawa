@@ -1,30 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+const BRAND = "REN KITAGAWA";
 
 function randomChar() {
   return CHARS[Math.floor(Math.random() * CHARS.length)];
 }
 
-function randomString(length: number) {
-  return Array.from({ length }, randomChar).join("");
-}
-
-function noisyText(text: string, intensity: number) {
-  return text.split("").map((char) =>
-    char !== " " && Math.random() < intensity ? randomChar() : char
-  ).join("");
-}
-
 export default function LoadingScreen() {
   const [visible, setVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [showBrand, setShowBrand] = useState(false);
-  const [lines, setLines] = useState<string[]>([]);
-  const [brandText, setBrandText] = useState("REN KITAGAWA");
+  const [progress, setProgress] = useState(0);
+  const [brandText, setBrandText] = useState(BRAND);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const stateRef = useRef({
+    col: 0, row: 0, done: false,
+    grid: [] as string[][],
+    cols: 0, rows: 0,
+  });
 
   useEffect(() => {
     if (sessionStorage.getItem("loaded")) {
@@ -32,80 +28,123 @@ export default function LoadingScreen() {
       return;
     }
 
-    const cols = Math.ceil((window.innerWidth - 80) / 14);
-    const maxRows = Math.ceil((window.innerHeight - 80) / 22);
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext("2d")!;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
 
-    // 行を1行ずつ追加
-    let rowCount = 0;
-    const addLineInterval = setInterval(() => {
-      if (rowCount >= maxRows) {
-        clearInterval(addLineInterval);
-        return;
+    const FONT_SIZE = 14;
+    const LINE_H = 22;
+    const PAD = 40;
+    const cols = Math.floor((W - PAD * 2) / FONT_SIZE);
+    const rows = Math.floor((H - PAD * 2) / LINE_H);
+
+    ctx.font = `${FONT_SIZE}px monospace`;
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, W, H);
+
+    // グリッド初期化（空白）
+    const grid: string[][] = Array.from({ length: rows }, () =>
+      Array.from({ length: cols }, () => " ")
+    );
+    stateRef.current = { col: 0, row: 0, done: false, grid, cols, rows };
+
+    let animId: number;
+
+    function drawGrid() {
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, W, H);
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const ch = grid[r][c];
+          if (ch === " ") continue;
+          const alpha = 0.25 + Math.random() * 0.65;
+          ctx.fillStyle = `rgba(30,80,180,${alpha})`;
+          ctx.fillText(ch, PAD + c * FONT_SIZE, PAD + r * LINE_H + FONT_SIZE);
+        }
       }
-      setLines((prev) => [...prev, randomString(cols)]);
-      rowCount++;
-    }, 80);
+    }
 
-    // 既存の行をランダムに書き換え
-    const updateInterval = setInterval(() => {
-      setLines((prev) =>
-        prev.map((line, i) =>
-          i < prev.length - 1 ? randomString(cols) : line
-        )
-      );
-    }, 100);
+    let charTimer = 0;
+    const CHAR_INTERVAL = 12; // ms per char
 
-    // プログレス 0→100
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) { clearInterval(progressInterval); return 100; }
-        return Math.min(100, prev + Math.floor(Math.random() * 3) + 1);
-      });
-    }, 50);
+    function tick(ts: number) {
+      const s = stateRef.current;
+      if (s.done) return;
 
-    const brandTimer = setTimeout(() => {
-      clearInterval(addLineInterval);
-      clearInterval(updateInterval);
-      setLines([]);
-      setShowBrand(true);
-    }, maxRows * 80 + 200);
+      // 1文字ずつ追加
+      if (ts - charTimer >= CHAR_INTERVAL) {
+        charTimer = ts;
+        grid[s.row][s.col] = randomChar();
+        s.col++;
+        if (s.col >= cols) {
+          s.col = 0;
+          s.row++;
+          if (s.row >= rows) {
+            s.done = true;
+            drawGrid();
+            setShowBrand(true);
+            return;
+          }
+        }
+      }
 
-    return () => {
-      clearInterval(addLineInterval);
-      clearInterval(updateInterval);
-      clearInterval(progressInterval);
-      clearTimeout(brandTimer);
-    };
+      // 既に書かれた文字をちらつかせる
+      for (let r = 0; r <= s.row; r++) {
+        for (let c = 0; c < cols; c++) {
+          if (grid[r][c] !== " " && Math.random() < 0.05) {
+            grid[r][c] = randomChar();
+          }
+        }
+      }
+
+      drawGrid();
+      animId = requestAnimationFrame(tick);
+    }
+
+    animId = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(animId);
   }, []);
 
-  // 100%になったらロゴのノイズを消す
+  // ブランド表示後: progress 0→100, ノイズはprogressに連動
   useEffect(() => {
     if (!showBrand) return;
-    const noiseInterval = setInterval(() => {
-      const intensity = Math.max(0, (100 - progress) / 100 * 0.8);
-      if (intensity === 0) {
-        setBrandText("REN KITAGAWA");
-      } else {
-        setBrandText(noisyText("REN KITAGAWA", intensity));
-      }
-    }, 60);
-    return () => clearInterval(noiseInterval);
-  }, [showBrand, progress]);
 
-  // 100%になったらフェードアウト
-  useEffect(() => {
-    if (progress >= 100 && showBrand) {
-      const fadeTimer = setTimeout(() => setFadeOut(true), 800);
-      const hideTimer = setTimeout(() => {
-        setVisible(false);
-        sessionStorage.setItem("loaded", "1");
-      }, 1400);
-      return () => {
-        clearTimeout(fadeTimer);
-        clearTimeout(hideTimer);
-      };
-    }
-  }, [progress, showBrand]);
+    let prog = 0;
+    setProgress(0);
+
+    const interval = setInterval(() => {
+      prog = Math.min(100, prog + Math.floor(Math.random() * 3) + 1);
+      setProgress(prog);
+
+      // ノイズ強度: 0%=激しい, 100%=0
+      const intensity = (1 - prog / 100) * 0.9;
+      if (intensity <= 0) {
+        setBrandText(BRAND);
+      } else {
+        setBrandText(
+          BRAND.split("").map((ch) =>
+            ch !== " " && Math.random() < intensity ? randomChar() : ch
+          ).join("")
+        );
+      }
+
+      if (prog >= 100) {
+        clearInterval(interval);
+        setBrandText(BRAND);
+        setTimeout(() => setFadeOut(true), 800);
+        setTimeout(() => {
+          setVisible(false);
+          sessionStorage.setItem("loaded", "1");
+        }, 1400);
+      }
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [showBrand]);
 
   if (!visible) return null;
 
@@ -116,37 +155,11 @@ export default function LoadingScreen() {
         inset: 0,
         zIndex: 9999,
         backgroundColor: "#000",
-        overflow: "hidden",
         transition: "opacity 0.6s ease",
         opacity: fadeOut ? 0 : 1,
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        padding: "40px",
       }}
     >
-      {lines.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column", lineHeight: "22px", width: "100%" }}>
-          {lines.map((line, ri) => (
-            <div key={ri} style={{ display: "flex" }}>
-              {line.split("").map((char, ci) => (
-                <span
-                  key={ci}
-                  style={{
-                    width: "14px",
-                    color: `rgba(30, 80, 180, ${0.2 + Math.random() * 0.7})`,
-                    fontSize: "13px",
-                    fontFamily: "monospace",
-                    textAlign: "center",
-                  }}
-                >
-                  {char}
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      )}
+      <canvas ref={canvasRef} style={{ position: "absolute", inset: 0 }} />
 
       {showBrand && (
         <div
@@ -180,7 +193,7 @@ export default function LoadingScreen() {
               fontFamily: "monospace",
             }}
           >
-            LOADING... {Math.min(progress, 100)}%
+            LOADING... {progress}%
           </div>
         </div>
       )}
