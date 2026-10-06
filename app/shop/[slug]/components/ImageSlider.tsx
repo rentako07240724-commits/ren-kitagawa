@@ -14,36 +14,46 @@ type Props = {
 };
 
 export default function ImageSlider({ images, productName }: Props) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const mobileRef = useRef<HTMLDivElement>(null);
+  const desktopRef = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(0);
 
+  // スマホ: 横スクロール
   useEffect(() => {
-    const el = scrollRef.current;
+    const el = mobileRef.current;
     if (!el) return;
     const onScroll = () => {
-      const index = Math.round(el.scrollLeft / el.clientWidth);
-      setCurrent(index);
+      setCurrent(Math.round(el.scrollLeft / el.clientWidth));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // PC: 縦スクロール
+  useEffect(() => {
+    const el = desktopRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      setCurrent(Math.round(el.scrollTop / el.clientHeight));
     };
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
   }, []);
 
   if (images.length === 0) {
-    return <div className="w-full h-screen md:h-full bg-[#0d0d0d]" />;
+    return <div className="w-full h-screen bg-[#0d0d0d]" />;
   }
 
   return (
     <div className="relative h-full">
-      {/* Scroll container */}
+
+      {/* スマホ: 横スクロール */}
       <div
-        ref={scrollRef}
-        className="flex overflow-x-scroll snap-x snap-mandatory scrollbar-none h-screen md:h-full"
+        ref={mobileRef}
+        className="md:hidden flex overflow-x-scroll snap-x snap-mandatory scrollbar-none h-screen"
       >
         {images.map((slide, i) => (
-          <div
-            key={i}
-            className="flex-none w-full h-screen md:h-full snap-start relative"
-          >
+          <div key={i} className="flex-none w-full h-screen snap-start relative">
             <Image
               src={slide.src}
               alt={`${productName} ${i + 1}`}
@@ -53,10 +63,7 @@ export default function ImageSlider({ images, productName }: Props) {
               priority={i === 0}
             />
             {slide.label && (
-              <span
-                className="absolute font-body font-light text-[7px] tracking-[0.45em] text-white/60 uppercase pointer-events-none"
-                style={{ bottom: "20px", left: "20px" }}
-              >
+              <span className="absolute font-body font-light text-[7px] tracking-[0.45em] text-white/60 uppercase pointer-events-none" style={{ bottom: "20px", left: "20px" }}>
                 {slide.label}
               </span>
             )}
@@ -64,9 +71,33 @@ export default function ImageSlider({ images, productName }: Props) {
         ))}
       </div>
 
-      {/* Dot indicator */}
+      {/* PC: 縦スクロール (マウスホイールで次の写真へ) */}
+      <div
+        ref={desktopRef}
+        className="hidden md:block overflow-y-scroll snap-y snap-mandatory scrollbar-none h-screen"
+      >
+        {images.map((slide, i) => (
+          <div key={i} className="w-full h-screen snap-start relative">
+            <Image
+              src={slide.src}
+              alt={`${productName} ${i + 1}`}
+              fill
+              className="object-cover object-center"
+              quality={100}
+              priority={i === 0}
+            />
+            {slide.label && (
+              <span className="absolute font-body font-light text-[7px] tracking-[0.45em] text-white/60 uppercase pointer-events-none" style={{ bottom: "20px", left: "20px" }}>
+                {slide.label}
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* ドットインジケーター */}
       {images.length > 1 && (
-        <div className="absolute bottom-6 left-0 right-0 flex justify-center items-center gap-[7px]">
+        <div className="absolute bottom-6 left-0 right-0 flex justify-center items-center gap-[7px] pointer-events-none">
           {images.map((_, i) => (
             <div
               key={i}
