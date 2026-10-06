@@ -88,44 +88,46 @@ export default function Home() {
       <main className="bg-black text-white">
 
         {/* ── 1. Hero ──────────────────────────────────── */}
-        <section className="relative h-[75vh] md:h-screen overflow-hidden bg-black mb-[120px]">
-          <Image
-            src="/images/hero.jpg"
-            alt="REN KITAGAWA SS2026"
-            fill
-            className="object-cover object-center"
-            quality={100}
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-          <div className="absolute bottom-10 left-6 md:bottom-16 md:left-12 z-10">
-            <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/35 uppercase mb-3">
-              SS 2026
-            </p>
-            <h1 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-[clamp(2.5rem,9vw,8rem)] whitespace-nowrap">
-              REN KITAGAWA
-            </h1>
-          </div>
-          <div className="absolute bottom-10 right-6 md:right-12 opacity-20">
-            <div className="h-10 w-px bg-white animate-pulse" />
+        <section className="relative overflow-hidden bg-black mb-[80px] md:mb-[120px]">
+          {/* スマホ: 縦長全画面 / PC: 左右余白つき横長 */}
+          <div className="relative w-full h-screen md:h-[70vh] md:mx-auto">
+            <Image
+              src="/images/hero.jpg"
+              alt="REN KITAGAWA SS2026"
+              fill
+              className="object-cover object-center"
+              quality={100}
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+            <div className="absolute bottom-10 left-6 md:bottom-12 md:left-10 z-10">
+              <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/35 uppercase mb-3">
+                SS 2026
+              </p>
+              <h1 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-4xl">
+                REN KITAGAWA
+              </h1>
+            </div>
           </div>
         </section>
 
         {/* ── 2. Sub-hero ──────────────────────────────── */}
-        <section className="relative h-[60vh] md:h-[75vh] overflow-hidden bg-black mb-[120px]">
-          <Image
-            src="/images/hero2.jpg"
-            alt="REN KITAGAWA"
-            fill
-            className="object-cover object-center"
-            quality={100}
-          />
-          <div className="absolute bottom-4 left-4 z-10">
-            <p className="font-body font-light text-[10px] tracking-[0.28em] text-white/85 uppercase leading-[2.4]">
-              Clothing built from silence.<br />
-              Tension held in fabric.<br />
-              Noise placed with intention.
-            </p>
+        <section className="relative overflow-hidden bg-black mb-[80px] md:mb-[120px]">
+          <div className="relative w-full h-screen md:h-[65vh]">
+            <Image
+              src="/images/hero2.jpg"
+              alt="REN KITAGAWA"
+              fill
+              className="object-cover object-top"
+              quality={100}
+            />
+            <div className="absolute bottom-4 left-4 z-10">
+              <p className="font-body font-light text-[10px] tracking-[0.28em] text-white/85 uppercase leading-[2.4]">
+                Clothing built from silence.<br />
+                Tension held in fabric.<br />
+                Noise placed with intention.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -144,7 +146,7 @@ export default function Home() {
           <CollectionSlider images={coatedImages} placeholderCount={2} />
           <div className="px-6 md:px-12 pt-14 flex flex-col gap-10">
             <div className="flex flex-col gap-3">
-              <h2 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-[clamp(2.5rem,9vw,8rem)]">
+              <h2 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-5xl">
                 Coated<br />Edition
               </h2>
               <p className="font-body font-light text-[10px] tracking-[0.3em] text-white/45 uppercase">
@@ -240,7 +242,7 @@ export default function Home() {
             href="https://instagram.com/ren_kitagawa__"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-heading text-lg md:text-[clamp(1.25rem,4vw,3rem)] leading-none uppercase text-white hover:opacity-35 transition-opacity duration-500"
+            className="font-heading text-lg md:text-3xl leading-none uppercase text-white hover:opacity-35 transition-opacity duration-500"
           >
             @ren_kitagawa__
           </a>
