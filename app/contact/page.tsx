@@ -38,21 +38,6 @@ export default function ContactPage() {
           </a>
         </div>
 
-        {/* Shop */}
-        <div className="flex flex-col gap-3">
-          <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/30 uppercase">
-            Shop
-          </p>
-          <a
-            href="https://ren-kitagawa.vercel.app/shop"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-body font-light text-[11px] tracking-[0.25em] text-white hover:text-white/50 transition-colors duration-300"
-          >
-            ren-kitagawa.vercel.app/shop
-          </a>
-        </div>
-
         {/* Mail */}
         <div className="flex flex-col gap-3">
           <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/30 uppercase">
