@@ -10,12 +10,10 @@ function getImages(): string[] {
       .readdirSync(dir)
       .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f))
       .sort((a, b) => {
-        // main.* を先頭に
         const aIsMain = a.toLowerCase().startsWith("main");
         const bIsMain = b.toLowerCase().startsWith("main");
         if (aIsMain && !bIsMain) return -1;
         if (!aIsMain && bIsMain) return 1;
-        // 拡張子を除いた数字で昇順（jpg/png 混在対応）
         const aNum = parseInt(a, 10);
         const bNum = parseInt(b, 10);
         if (!isNaN(aNum) && !isNaN(bNum)) return aNum - bNum;
@@ -74,8 +72,8 @@ export default function SecondSeasonPage() {
         </div>
       </div>
 
-      {/* Body photos — 1 column */}
-      <div className="flex flex-col gap-4 py-16 md:py-24">
+      {/* Body photos — 1 col mobile / 2 col desktop */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-16 md:py-24 px-0 md:px-4">
         {bodyImages.length > 0
           ? bodyImages.map((src, i) => (
               <div key={i} className="relative w-full aspect-[3/4] bg-[#0d0d0d]">
