@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Inter } from "next/font/google";
 import "./globals.css";
-import LoadingScreen from "@/components/LoadingScreen";
+import LoadingScreen from "./components/LoadingScreen";
 
 const archivoBlack = Archivo_Black({
   variable: "--font-archivo-black",
