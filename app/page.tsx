@@ -46,7 +46,7 @@ function getCoatedImages(): string[] {
         if (!isNaN(aNum) && !isNaN(bNum)) return aNum - bNum;
         return a.localeCompare(b);
       });
-    return files.map((f) => `/images/coated-edition/${f}`);
+    return files.slice(0, 5).map((f) => `/images/coated-edition/${f}`);
   } catch {
     return [];
   }
