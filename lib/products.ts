@@ -24,8 +24,10 @@ export const products: Product[] = [
     name: "Coated Frame Jeans",
     price: 30000,
     priceId: "price_1UNXwc04FSXNU1UEcK2vrLEP",
-    descriptionJa: "商品説明は近日公開予定です。",
-    descriptionEn: "Description coming soon.",
+    descriptionJa:
+      "デニム本来の柔らかさを残しながら、レザーのような鈍い光沢を持たせる特殊なコーティング加工を施したFRAME JEANSのCOATED EDITION。光を受けた時の見え方、生地の表情そのものが変わる。着用を重ねても光沢は失われず、時間とともにコーティング特有の質感がさらに深まっていく。ワイドシルエット、ダブルニー構造、大きめのポケット、リベットを使ったディテール。通常モデルの構造はそのままに、加工によって全く異なる表情を持つ一本。",
+    descriptionEn:
+      "FRAME JEANS COATED EDITION. A special coating process creates a leather-like sheen while preserving the natural softness of the denim. Not simply gloss added to the surface — the way light moves across the fabric itself is transformed. The sheen does not fade with continued wear, while the coated texture develops greater depth over time. Wide silhouette. Double-knee construction. Oversized pockets. Rivet detailing. The same structure as the original, finished with an entirely different expression.",
     sizes: ["1", "2"],
     sizeGuide: [
       { label: "ウエスト", labelEn: "Waist",        value: "80cm",  values: ["80cm",  "85cm"]  },
@@ -39,8 +41,10 @@ export const products: Product[] = [
     name: "Coated Flow Jeans",
     price: 30000,
     priceId: "price_1UNXxB04FSXNU1UEavxr9QgI",
-    descriptionJa: "商品説明は近日公開予定です。",
-    descriptionEn: "Description coming soon.",
+    descriptionJa:
+      "流れる切替線と、裾に向かって広がるフレアシルエットを持つFLOW JEANSのCOATED EDITION。デニムの柔らかさを残したまま、特殊なコーティングによってレザーのような光沢が生まれる。光の入り方が変わり、動くたびに異なる表情を見せる。着用を重ねても光沢は失われず、時間とともに質感はさらに深くなる。またCOATED EDITIONでは、通常のFLOW JEANSからリベットの位置・配置を再構成。コーティングだけでなく、ディテールもこのエディション専用の仕様となっている。",
+    descriptionEn:
+      "FLOW JEANS COATED EDITION. Flowing panel lines and a flared silhouette that opens toward the hem, finished with a special coating process that creates a leather-like sheen while preserving the natural softness of the denim. The way light moves across the fabric changes — each movement reveals a different surface expression. The sheen does not fade with continued wear, while the coated texture develops greater depth over time. For the COATED EDITION, the rivet placement has been fully redesigned — a detail configuration unique to this version, distinct from the standard model.",
     sizes: ["1", "2"],
     sizeGuide: [
       { label: "ウエスト", labelEn: "Waist",        value: "80cm",  values: ["80cm",  "86cm"]  },
