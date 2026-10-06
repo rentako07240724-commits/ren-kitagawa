@@ -29,6 +29,29 @@ function getCollectionImages(): string[] {
   }
 }
 
+/** public/images/coated-edition/ の画像 */
+function getCoatedImages(): string[] {
+  const dir = path.join(process.cwd(), "public", "images", "coated-edition");
+  try {
+    const files = fs
+      .readdirSync(dir)
+      .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f))
+      .sort((a, b) => {
+        const aIsMain = a.toLowerCase().startsWith("main");
+        const bIsMain = b.toLowerCase().startsWith("main");
+        if (aIsMain && !bIsMain) return -1;
+        if (!aIsMain && bIsMain) return 1;
+        const aNum = parseInt(a, 10);
+        const bNum = parseInt(b, 10);
+        if (!isNaN(aNum) && !isNaN(bNum)) return aNum - bNum;
+        return a.localeCompare(b);
+      });
+    return files.map((f) => `/images/coated-edition/${f}`);
+  } catch {
+    return [];
+  }
+}
+
 /** 各サブフォルダの先頭画像（サムネイル用）— main.* を優先 */
 function getFirstImage(subfolder: string): string | null {
   const dir = path.join(process.cwd(), "public", "images", "collection", subfolder);
@@ -56,6 +79,7 @@ const PLACEHOLDER_COUNT = 4;
 
 export default function Home() {
   const collectionImages = getCollectionImages();
+  const coatedImages = getCoatedImages();
   const collectionItems = [
     { label: "1ST SEASON", href: "/collection/1st-season", thumb: getFirstImage("1st") },
     { label: "2ND SEASON", href: "/collection/2nd-season", thumb: getFirstImage("2nd") },
@@ -123,29 +147,43 @@ export default function Home() {
         </section>
 
         {/* ── 2.7. COATED EDITION 告知 ─────────────────── */}
-        <section className="border-t border-white/8 px-6 md:px-12 py-20 md:py-28 flex flex-col gap-10">
-          <div className="flex flex-col gap-4">
-            <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/30 uppercase">
-              Coated Denim
-            </p>
-            <h2 className="font-heading text-[clamp(2rem,8vw,5rem)] uppercase leading-[0.85]">
-              Frame Jeans<br />/ Flow Jeans
-            </h2>
+        <section className="border-t border-white/8 pb-20 md:pb-28">
+          {/* Image slider — full width */}
+          <CollectionSlider images={coatedImages} placeholderCount={2} />
+
+          {/* Text + buttons */}
+          <div className="px-6 md:px-12 pt-14 flex flex-col gap-10">
+            <div className="flex flex-col gap-3">
+              <h2 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-[clamp(2.5rem,9vw,8rem)]">
+                Coated<br />Denim
+              </h2>
+              <p className="font-body font-light text-[10px] tracking-[0.3em] text-white/45 uppercase">
+                Frame Jeans / Flow Jeans
+              </p>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <p className="font-body font-light text-[11px] tracking-[0.35em] text-white/60 uppercase">
+                10.15 — One Day Only
+              </p>
+              <p className="font-body font-light text-[11px] tracking-[0.35em] text-white/60 uppercase">
+                Online Order
+              </p>
+            </div>
+            <div className="flex justify-center gap-5">
+              <Link
+                href="/coated-edition"
+                className="font-body font-light text-[8px] tracking-[0.5em] text-white uppercase border-[0.5px] border-white px-8 py-3 hover:bg-white hover:text-black transition-colors duration-300"
+              >
+                MORE
+              </Link>
+              <Link
+                href="/shop"
+                className="font-body font-light text-[8px] tracking-[0.5em] text-white uppercase border-[0.5px] border-white px-8 py-3 hover:bg-white hover:text-black transition-colors duration-300"
+              >
+                VIEW SHOP
+              </Link>
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <p className="font-body font-light text-[8px] tracking-[0.45em] text-white/55 uppercase">
-              10.15 — One Day Only
-            </p>
-            <p className="font-body font-light text-[8px] tracking-[0.45em] text-white/55 uppercase">
-              Online Order
-            </p>
-          </div>
-          <Link
-            href="/shop"
-            className="w-full font-body font-light text-[8px] tracking-[0.5em] text-white uppercase border-[0.5px] border-white py-4 text-center hover:bg-white hover:text-black transition-colors duration-300"
-          >
-            View →
-          </Link>
         </section>
 
         {/* ── 3. SS 2026 スワイプ式写真 ─────────────────── */}
