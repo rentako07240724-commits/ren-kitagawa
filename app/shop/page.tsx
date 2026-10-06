@@ -4,15 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { products } from "@/lib/products";
 
-/** サムネイル: subfolder の main.* → flat ファイル の順で探す */
 function getProductImage(slug: string): string | null {
   const exts = ["jpg", "jpeg", "png", "webp", "avif"];
-  // 1) public/images/products/[slug]/main.*
   for (const ext of exts) {
     const f = path.join(process.cwd(), "public", "images", "products", slug, `main.${ext}`);
     if (fs.existsSync(f)) return `/images/products/${slug}/main.${ext}`;
   }
-  // 2) public/images/products/[slug].*（flat）
   for (const ext of exts) {
     const f = path.join(process.cwd(), "public", "images", "products", `${slug}.${ext}`);
     if (fs.existsSync(f)) return `/images/products/${slug}.${ext}`;
@@ -54,16 +51,15 @@ export default function ShopPage() {
       </div>
 
       {/* Product list */}
-      <div className="flex flex-col pb-24">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pb-24">
         {products.map((product) => {
           const img = getProductImage(product.slug);
           return (
             <Link
               key={product.slug}
               href={`/shop/${product.slug}`}
-              className="border-t border-white/8 px-6 md:px-12 py-10 block group"
+              className="border-t border-white/8 px-6 md:px-8 py-10 block group md:border-l"
             >
-              {/* Image */}
               <div className="relative w-full aspect-[3/4] bg-[#0d0d0d] mb-7 overflow-hidden">
                 {img && (
                   <Image
@@ -75,8 +71,6 @@ export default function ShopPage() {
                   />
                 )}
               </div>
-
-              {/* Info */}
               <div className="flex flex-col gap-3">
                 <div className="flex items-baseline justify-between gap-4">
                   <h2 className="font-heading text-base uppercase tracking-[0.04em]">
