@@ -6,7 +6,6 @@ import Nav from "@/app/components/Nav";
 import Loader from "@/app/components/Loader";
 import CollectionSlider from "@/app/components/CollectionSlider";
 
-/** public/images/collection/26ss/ の画像（スワイプ用）— main先頭・数値昇順・最大5枚 */
 function getCollectionImages(): string[] {
   const dir = path.join(process.cwd(), "public", "images", "collection", "26ss");
   try {
@@ -29,7 +28,6 @@ function getCollectionImages(): string[] {
   }
 }
 
-/** public/images/coated-edition/ の画像 */
 function getCoatedImages(): string[] {
   const dir = path.join(process.cwd(), "public", "images", "coated-edition");
   try {
@@ -52,17 +50,14 @@ function getCoatedImages(): string[] {
   }
 }
 
-/** 各サブフォルダの先頭画像（サムネイル用）— main.* を優先 */
 function getFirstImage(subfolder: string): string | null {
   const dir = path.join(process.cwd(), "public", "images", "collection", subfolder);
   try {
     const files = fs
       .readdirSync(dir)
       .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f));
-    // main.* があれば最優先で返す
     const main = files.find((f) => f.toLowerCase().startsWith("main"));
     if (main) return `/images/collection/${subfolder}/${main}`;
-    // なければ数値昇順の先頭
     files.sort((a, b) => {
       const aNum = parseInt(a, 10);
       const bNum = parseInt(b, 10);
@@ -93,7 +88,7 @@ export default function Home() {
       <main className="bg-black text-white">
 
         {/* ── 1. Hero ──────────────────────────────────── */}
-        <section className="relative h-screen overflow-hidden bg-black mb-[120px]">
+        <section className="relative h-[75vh] md:h-screen overflow-hidden bg-black mb-[120px]">
           <Image
             src="/images/hero.jpg"
             alt="REN KITAGAWA SS2026"
@@ -103,7 +98,6 @@ export default function Home() {
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-
           <div className="absolute bottom-10 left-6 md:bottom-16 md:left-12 z-10">
             <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/35 uppercase mb-3">
               SS 2026
@@ -112,14 +106,13 @@ export default function Home() {
               REN KITAGAWA
             </h1>
           </div>
-
           <div className="absolute bottom-10 right-6 md:right-12 opacity-20">
             <div className="h-10 w-px bg-white animate-pulse" />
           </div>
         </section>
 
         {/* ── 2. Sub-hero ──────────────────────────────── */}
-        <section className="relative h-screen overflow-hidden bg-black mb-[120px]">
+        <section className="relative h-[60vh] md:h-[75vh] overflow-hidden bg-black mb-[120px]">
           <Image
             src="/images/hero2.jpg"
             alt="REN KITAGAWA"
@@ -136,7 +129,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 2.5. SHOP ボタン（hero2 直下） ───────────────── */}
+        {/* ── 2.5. SHOP ボタン ───────────────── */}
         <section className="px-6 md:px-12 pb-16 md:pb-20">
           <Link
             href="/shop"
@@ -146,12 +139,9 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* ── 2.7. COATED EDITION 告知 ─────────────────── */}
+        {/* ── 2.7. COATED EDITION ─────────────────── */}
         <section className="border-t border-white/8 pb-20 md:pb-28">
-          {/* Image slider — full width */}
           <CollectionSlider images={coatedImages} placeholderCount={2} />
-
-          {/* Text + buttons */}
           <div className="px-6 md:px-12 pt-14 flex flex-col gap-10">
             <div className="flex flex-col gap-3">
               <h2 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-[clamp(2.5rem,9vw,8rem)]">
@@ -186,19 +176,14 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 3. SS 2026 スワイプ式写真 ─────────────────── */}
+        {/* ── 3. SS 2026 ─────────────────── */}
         <section className="pb-16 md:pb-24">
           <div className="px-6 md:px-12 pt-20 md:pt-[80px] mb-10 md:mb-12">
             <p className="font-body font-light text-[10px] tracking-[0.5em] text-white uppercase">
               SS 2026
             </p>
           </div>
-          <CollectionSlider
-            images={collectionImages}
-            placeholderCount={PLACEHOLDER_COUNT}
-          />
-
-          {/* MORE button — スワイプエリア直下に常時表示 */}
+          <CollectionSlider images={collectionImages} placeholderCount={PLACEHOLDER_COUNT} />
           <div className="flex justify-center mt-8">
             <Link
               href="/collection/ss2026"
@@ -211,7 +196,7 @@ export default function Home() {
 
         {/* ── 4. Collection links ───────────────────────── */}
         <section id="collection" className="pt-16 md:pt-20 pb-24 md:pb-40">
-          <div className="flex flex-col gap-px">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px">
             {collectionItems.map(({ label, href, thumb }) => (
               <Link
                 key={label}
@@ -237,8 +222,8 @@ export default function Home() {
         </section>
 
         {/* ── 5. Brand text ────────────────────────────── */}
-        <section className="bg-black px-8 py-[120px]">
-          <p className="font-body font-light text-sm tracking-[0.1em] text-white/80 leading-loose">
+        <section className="bg-black px-8 md:px-24 py-[120px]">
+          <p className="font-body font-light text-sm tracking-[0.1em] text-white/80 leading-loose max-w-xl">
             Born from friction.<br />
             Shaped by restraint.<br />
             Worn by those who understand<br />
