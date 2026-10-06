@@ -8,6 +8,10 @@ function randomChar() {
   return CHARS[Math.floor(Math.random() * CHARS.length)];
 }
 
+function randomString(length: number) {
+  return Array.from({ length }, randomChar).join("");
+}
+
 function noisyText(text: string, intensity: number) {
   return text.split("").map((char) =>
     char !== " " && Math.random() < intensity ? randomChar() : char
@@ -19,7 +23,7 @@ export default function LoadingScreen() {
   const [fadeOut, setFadeOut] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showBrand, setShowBrand] = useState(false);
-  const [grid, setGrid] = useState<string[][]>([]);
+  const [lines, setLines] = useState<string[]>([]);
   const [brandText, setBrandText] = useState("REN KITAGAWA");
 
   useEffect(() => {
@@ -29,61 +33,79 @@ export default function LoadingScreen() {
     }
 
     const cols = Math.ceil((window.innerWidth - 80) / 14);
-    const rows = Math.ceil((window.innerHeight - 80) / 22);
-    const initial = Array.from({ length: rows }, () =>
-      Array.from({ length: cols }, () => randomChar())
-    );
-    setGrid(initial);
+    const maxRows = Math.ceil((window.innerHeight - 80) / 22);
 
-    const gridInterval = setInterval(() => {
-      setGrid((prev) =>
-        prev.map((row) => row.map(() => randomChar()))
+    // 行を1行ずつ追加
+    let rowCount = 0;
+    const addLineInterval = setInterval(() => {
+      if (rowCount >= maxRows) {
+        clearInterval(addLineInterval);
+        return;
+      }
+      setLines((prev) => [...prev, randomString(cols)]);
+      rowCount++;
+    }, 80);
+
+    // 既存の行をランダムに書き換え
+    const updateInterval = setInterval(() => {
+      setLines((prev) =>
+        prev.map((line, i) =>
+          i < prev.length - 1 ? randomString(cols) : line
+        )
       );
-    }, 50);
+    }, 100);
 
+    // プログレス 0→100
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) { clearInterval(progressInterval); return 100; }
-        return prev + Math.floor(Math.random() * 4) + 1;
+        return Math.min(100, prev + Math.floor(Math.random() * 3) + 1);
       });
-    }, 40);
+    }, 50);
 
     const brandTimer = setTimeout(() => {
-      clearInterval(gridInterval);
-      setGrid([]);
+      clearInterval(addLineInterval);
+      clearInterval(updateInterval);
+      setLines([]);
       setShowBrand(true);
-    }, 1800);
-
-    const fadeTimer = setTimeout(() => setFadeOut(true), 3200);
-    const hideTimer = setTimeout(() => {
-      setVisible(false);
-      sessionStorage.setItem("loaded", "1");
-    }, 3800);
+    }, maxRows * 80 + 200);
 
     return () => {
-      clearInterval(gridInterval);
+      clearInterval(addLineInterval);
+      clearInterval(updateInterval);
       clearInterval(progressInterval);
       clearTimeout(brandTimer);
-      clearTimeout(fadeTimer);
-      clearTimeout(hideTimer);
     };
   }, []);
 
-  // ブランド名ノイズアニメーション
+  // 100%になったらロゴのノイズを消す
   useEffect(() => {
     if (!showBrand) return;
-    let count = 0;
     const noiseInterval = setInterval(() => {
-      const intensity = Math.max(0, 0.6 - count * 0.05);
-      setBrandText(noisyText("REN KITAGAWA", intensity));
-      count++;
-      if (count > 20) {
+      const intensity = Math.max(0, (100 - progress) / 100 * 0.8);
+      if (intensity === 0) {
         setBrandText("REN KITAGAWA");
-        clearInterval(noiseInterval);
+      } else {
+        setBrandText(noisyText("REN KITAGAWA", intensity));
       }
     }, 60);
     return () => clearInterval(noiseInterval);
-  }, [showBrand]);
+  }, [showBrand, progress]);
+
+  // 100%になったらフェードアウト
+  useEffect(() => {
+    if (progress >= 100 && showBrand) {
+      const fadeTimer = setTimeout(() => setFadeOut(true), 800);
+      const hideTimer = setTimeout(() => {
+        setVisible(false);
+        sessionStorage.setItem("loaded", "1");
+      }, 1400);
+      return () => {
+        clearTimeout(fadeTimer);
+        clearTimeout(hideTimer);
+      };
+    }
+  }, [progress, showBrand]);
 
   if (!visible) return null;
 
@@ -98,27 +120,21 @@ export default function LoadingScreen() {
         transition: "opacity 0.6s ease",
         opacity: fadeOut ? 0 : 1,
         display: "flex",
-        alignItems: "center",
+        alignItems: "flex-start",
         justifyContent: "center",
+        padding: "40px",
       }}
     >
-      {grid.length > 0 && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            lineHeight: "22px",
-            padding: "40px",
-          }}
-        >
-          {grid.map((row, ri) => (
+      {lines.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", lineHeight: "22px", width: "100%" }}>
+          {lines.map((line, ri) => (
             <div key={ri} style={{ display: "flex" }}>
-              {row.map((char, ci) => (
+              {line.split("").map((char, ci) => (
                 <span
                   key={ci}
                   style={{
                     width: "14px",
-                    color: `rgba(30, 80, 180, ${0.15 + Math.random() * 0.7})`,
+                    color: `rgba(30, 80, 180, ${0.2 + Math.random() * 0.7})`,
                     fontSize: "13px",
                     fontFamily: "monospace",
                     textAlign: "center",
@@ -135,9 +151,12 @@ export default function LoadingScreen() {
       {showBrand && (
         <div
           style={{
+            position: "absolute",
+            inset: 0,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            justifyContent: "center",
             gap: "1.5rem",
             animation: "fadeIn 0.4s ease forwards",
           }}
