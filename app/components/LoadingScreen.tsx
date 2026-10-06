@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&><=/\\|[]{}";
 const BRAND = "REN KITAGAWA";
 
 function randomChar() {
@@ -16,11 +16,6 @@ export default function LoadingScreen() {
   const [progress, setProgress] = useState(0);
   const [brandText, setBrandText] = useState(BRAND);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const stateRef = useRef({
-    col: 0, row: 0, done: false,
-    grid: [] as string[][],
-    cols: 0, rows: 0,
-  });
 
   useEffect(() => {
     if (sessionStorage.getItem("loaded")) {
@@ -35,81 +30,100 @@ export default function LoadingScreen() {
     canvas.width = W;
     canvas.height = H;
 
-    const FONT_SIZE = 14;
-    const LINE_H = 22;
-    const PAD = 40;
-    const cols = Math.floor((W - PAD * 2) / FONT_SIZE);
-    const rows = Math.floor((H - PAD * 2) / LINE_H);
+    const FONT_SIZE = 13;
+    const LINE_H = 20;
+    const PAD_X = 40;
+    const PAD_Y = 40;
+    const maxCols = Math.floor((W - PAD_X * 2) / FONT_SIZE);
+    const rows = Math.floor((H - PAD_Y * 2) / LINE_H);
 
     ctx.font = `${FONT_SIZE}px monospace`;
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, W, H);
 
-    // グリッド初期化（空白）
-    const grid: string[][] = Array.from({ length: rows }, () =>
-      Array.from({ length: cols }, () => " ")
+    // 行ごとにランダムな文字数を決める
+    const rowLengths = Array.from({ length: rows }, () =>
+      Math.floor(maxCols * (0.4 + Math.random() * 0.6))
     );
-    stateRef.current = { col: 0, row: 0, done: false, grid, cols, rows };
 
+    // 全文字数
+    const totalChars = rowLengths.reduce((a, b) => a + b, 0);
+    const DURATION = 3000; // ms
+    const CHAR_INTERVAL = DURATION / totalChars;
+
+    // グリッド
+    const grid: string[][] = Array.from({ length: rows }, (_, i) =>
+      Array.from({ length: rowLengths[i] }, () => " ")
+    );
+
+    let currentRow = 0;
+    let currentCol = 0;
+    let lastTime = 0;
+    let elapsed = 0;
+    let done = false;
     let animId: number;
 
     function drawGrid() {
       ctx.fillStyle = "#000";
       ctx.fillRect(0, 0, W, H);
       for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
+        for (let c = 0; c < rowLengths[r]; c++) {
           const ch = grid[r][c];
           if (ch === " ") continue;
-          const alpha = 0.25 + Math.random() * 0.65;
+          const alpha = 0.2 + Math.random() * 0.7;
           ctx.fillStyle = `rgba(30,80,180,${alpha})`;
-          ctx.fillText(ch, PAD + c * FONT_SIZE, PAD + r * LINE_H + FONT_SIZE);
+          ctx.fillText(ch, PAD_X + c * FONT_SIZE, PAD_Y + r * LINE_H + FONT_SIZE);
         }
       }
     }
 
-    let charTimer = 0;
-    const CHAR_INTERVAL = 12; // ms per char
-
     function tick(ts: number) {
-      const s = stateRef.current;
-      if (s.done) return;
+      if (!lastTime) lastTime = ts;
+      const dt = ts - lastTime;
+      lastTime = ts;
 
-      // 1文字ずつ追加
-      if (ts - charTimer >= CHAR_INTERVAL) {
-        charTimer = ts;
-        grid[s.row][s.col] = randomChar();
-        s.col++;
-        if (s.col >= cols) {
-          s.col = 0;
-          s.row++;
-          if (s.row >= rows) {
-            s.done = true;
-            drawGrid();
+      if (!done) {
+        elapsed += dt;
+        const charsToAdd = Math.floor(elapsed / CHAR_INTERVAL);
+        elapsed -= charsToAdd * CHAR_INTERVAL;
+
+        for (let i = 0; i < charsToAdd; i++) {
+          if (currentRow >= rows) { done = true; break; }
+          grid[currentRow][currentCol] = randomChar();
+          currentCol++;
+          if (currentCol >= rowLengths[currentRow]) {
+            currentCol = 0;
+            currentRow++;
+          }
+        }
+
+        // 書き終えた文字をちらつかせる
+        for (let r = 0; r < Math.min(currentRow + 1, rows); r++) {
+          for (let c = 0; c < rowLengths[r]; c++) {
+            if (grid[r][c] !== " " && Math.random() < 0.03) {
+              grid[r][c] = randomChar();
+            }
+          }
+        }
+
+        drawGrid();
+
+        if (done) {
+          setTimeout(() => {
+            cancelAnimationFrame(animId);
             setShowBrand(true);
-            return;
-          }
+          }, 200);
+          return;
         }
       }
 
-      // 既に書かれた文字をちらつかせる
-      for (let r = 0; r <= s.row; r++) {
-        for (let c = 0; c < cols; c++) {
-          if (grid[r][c] !== " " && Math.random() < 0.05) {
-            grid[r][c] = randomChar();
-          }
-        }
-      }
-
-      drawGrid();
       animId = requestAnimationFrame(tick);
     }
 
     animId = requestAnimationFrame(tick);
-
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  // ブランド表示後: progress 0→100, ノイズはprogressに連動
   useEffect(() => {
     if (!showBrand) return;
 
@@ -120,7 +134,6 @@ export default function LoadingScreen() {
       prog = Math.min(100, prog + Math.floor(Math.random() * 3) + 1);
       setProgress(prog);
 
-      // ノイズ強度: 0%=激しい, 100%=0
       const intensity = (1 - prog / 100) * 0.9;
       if (intensity <= 0) {
         setBrandText(BRAND);
@@ -159,7 +172,9 @@ export default function LoadingScreen() {
         opacity: fadeOut ? 0 : 1,
       }}
     >
-      <canvas ref={canvasRef} style={{ position: "absolute", inset: 0 }} />
+      {!showBrand && (
+        <canvas ref={canvasRef} style={{ position: "absolute", inset: 0 }} />
+      )}
 
       {showBrand && (
         <div
