@@ -88,9 +88,11 @@ export default function Home() {
       <main className="bg-black text-white">
 
         {/* ── 1. Hero ──────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-black mb-[80px] md:mb-[120px]">
-          {/* スマホ: 縦長全画面 / PC: 左右余白つき横長 */}
-          <div className="relative w-full h-screen md:h-[70vh] md:mx-auto">
+        {/* スマホ: 全画面 / PC: 左画像 + 右テキスト */}
+        <section className="mb-[80px] md:mb-[100px]">
+
+          {/* スマホのみ */}
+          <div className="relative h-screen md:hidden">
             <Image
               src="/images/hero.jpg"
               alt="REN KITAGAWA SS2026"
@@ -99,21 +101,44 @@ export default function Home() {
               quality={100}
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-            <div className="absolute bottom-10 left-6 md:bottom-12 md:left-10 z-10">
-              <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/35 uppercase mb-3">
-                SS 2026
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
+            <div className="absolute bottom-10 left-6 z-10">
+              <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/35 uppercase mb-3">SS 2026</p>
+              <h1 className="font-heading leading-[0.85] uppercase text-2xl">REN KITAGAWA</h1>
+            </div>
+          </div>
+
+          {/* PC: 2カラム */}
+          <div className="hidden md:grid md:grid-cols-2 min-h-screen">
+            {/* 左: 画像 */}
+            <div className="relative">
+              <Image
+                src="/images/hero.jpg"
+                alt="REN KITAGAWA SS2026"
+                fill
+                className="object-cover object-center"
+                quality={100}
+                priority
+              />
+            </div>
+            {/* 右: テキスト */}
+            <div className="flex flex-col justify-end px-16 pb-16 bg-black">
+              <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/35 uppercase mb-4">SS 2026</p>
+              <h1 className="font-heading leading-[0.85] uppercase text-5xl mb-8">REN KITAGAWA</h1>
+              <p className="font-body font-light text-[10px] tracking-[0.3em] text-white/40 uppercase leading-[2.6]">
+                Clothing built from silence.<br />
+                Tension held in fabric.<br />
+                Noise placed with intention.
               </p>
-              <h1 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-4xl">
-                REN KITAGAWA
-              </h1>
             </div>
           </div>
         </section>
 
         {/* ── 2. Sub-hero ──────────────────────────────── */}
-        <section className="relative overflow-hidden bg-black mb-[80px] md:mb-[120px]">
-          <div className="relative w-full h-screen md:h-[65vh]">
+        <section className="mb-[80px] md:mb-[100px]">
+
+          {/* スマホのみ */}
+          <div className="relative h-screen md:hidden">
             <Image
               src="/images/hero2.jpg"
               alt="REN KITAGAWA"
@@ -129,10 +154,43 @@ export default function Home() {
               </p>
             </div>
           </div>
+
+          {/* PC: 右画像 + 左テキスト (逆順) */}
+          <div className="hidden md:grid md:grid-cols-2">
+            {/* 左: テキスト */}
+            <div className="flex flex-col justify-center px-16 py-24 bg-black">
+              <p className="font-body font-light text-[8px] tracking-[0.5em] text-white/25 uppercase mb-6">
+                SS 2026 — COLLECTION
+              </p>
+              <p className="font-body font-light text-[13px] tracking-[0.2em] text-white/60 uppercase leading-[2.8]">
+                Frame Jeans<br />
+                Flow Jeans<br />
+                Coated Edition
+              </p>
+              <div className="mt-12">
+                <Link
+                  href="/shop"
+                  className="font-body font-light text-[8px] tracking-[0.5em] text-white uppercase border-[0.5px] border-white px-8 py-3 hover:bg-white hover:text-black transition-colors duration-300 inline-block"
+                >
+                  VIEW SHOP
+                </Link>
+              </div>
+            </div>
+            {/* 右: 画像 */}
+            <div className="relative aspect-[3/4]">
+              <Image
+                src="/images/hero2.jpg"
+                alt="REN KITAGAWA"
+                fill
+                className="object-cover object-top"
+                quality={100}
+              />
+            </div>
+          </div>
         </section>
 
-        {/* ── 2.5. SHOP ボタン ───────────────── */}
-        <section className="px-6 md:px-12 pb-16 md:pb-20">
+        {/* ── 2.5. SHOP ボタン (スマホのみ) ───────────────── */}
+        <section className="px-6 pb-16 md:hidden">
           <Link
             href="/shop"
             className="block w-full font-body font-light text-[8px] tracking-[0.5em] text-white uppercase border-[0.5px] border-white py-4 text-center hover:bg-white hover:text-black transition-colors duration-300"
@@ -146,7 +204,7 @@ export default function Home() {
           <CollectionSlider images={coatedImages} placeholderCount={2} />
           <div className="px-6 md:px-12 pt-14 flex flex-col gap-10">
             <div className="flex flex-col gap-3">
-              <h2 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-5xl">
+              <h2 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-4xl">
                 Coated<br />Edition
               </h2>
               <p className="font-body font-light text-[10px] tracking-[0.3em] text-white/45 uppercase">
