@@ -72,8 +72,8 @@ export default function CoatedEditionPage() {
         </div>
       </div>
 
-      {/* Body photos — 1 column */}
-      <div className="flex flex-col gap-4 py-16 md:py-24">
+      {/* Body photos — 1 col mobile / 2 col desktop */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-16 md:py-24 px-0 md:px-4">
         {bodyImages.length > 0
           ? bodyImages.map((src, i) => (
               <div key={i} className="relative w-full aspect-[3/4] bg-[#0d0d0d]">
