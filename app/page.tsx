@@ -155,7 +155,7 @@ export default function Home() {
           <div className="px-6 md:px-12 pt-14 flex flex-col gap-10">
             <div className="flex flex-col gap-3">
               <h2 className="font-heading leading-[0.85] uppercase tracking-[-0.01em] text-2xl md:text-[clamp(2.5rem,9vw,8rem)]">
-                Coated<br />Denim
+                Coated<br />Edition
               </h2>
               <p className="font-body font-light text-[10px] tracking-[0.3em] text-white/45 uppercase">
                 Frame Jeans / Flow Jeans
