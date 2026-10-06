@@ -119,7 +119,7 @@ export default function LoadingScreen() {
     if (!showWarning) return;
     const blink = setInterval(() => {
       setWarningBlink((v) => !v);
-    }, 200);
+    }, 80);
     return () => clearInterval(blink);
   }, [showWarning]);
 
@@ -159,10 +159,23 @@ export default function LoadingScreen() {
     <div style={{ position: "fixed", inset: 0, zIndex: 9999, backgroundColor: "#000", transition: "opacity 0.6s ease", opacity: fadeOut ? 0 : 1 }}>
       {!showBrand && <canvas ref={canvasRef} style={{ position: "absolute", inset: 0 }} />}
       {showWarning && (
-        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 10000, backgroundColor: "#0a0a0a", border: "1px solid #1e50b4", padding: "24px 32px", minWidth: "320px", opacity: warningBlink ? 1 : 0, transition: "opacity 0.08s" }}>
-          <div style={{ color: "#1e50b4", fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.2em", marginBottom: "12px" }}>⚠ ALERT</div>
-          <div style={{ color: "#fff", fontFamily: "monospace", fontSize: "13px", letterSpacing: "0.05em", marginBottom: "6px" }}>Unknown signal intercepted.</div>
-          <div style={{ color: "#1e50b4", fontFamily: "monospace", fontSize: "12px", letterSpacing: "0.1em" }}>Origin: REN KITAGAWA</div>
+        <div style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: warningBlink ? "translate(-50%, -50%) scale(1.03)" : "translate(-50%, -50%) scale(0.97)",
+          zIndex: 10000,
+          backgroundColor: "#0a0a0a",
+          border: `2px solid ${warningBlink ? "#1e50b4" : "#0a2a6e"}`,
+          padding: "24px 32px",
+          minWidth: "320px",
+          opacity: warningBlink ? 1 : 0.15,
+          transition: "opacity 0.05s, transform 0.05s, border 0.05s",
+          boxShadow: warningBlink ? "0 0 24px rgba(30,80,180,0.9), 0 0 60px rgba(30,80,180,0.4)" : "none",
+        }}>
+          <div style={{ color: warningBlink ? "#1e50b4" : "#0a2a6e", fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.2em", marginBottom: "12px", transition: "color 0.05s" }}>⚠ ALERT</div>
+          <div style={{ color: warningBlink ? "#fff" : "#333", fontFamily: "monospace", fontSize: "13px", letterSpacing: "0.05em", marginBottom: "6px", transition: "color 0.05s" }}>Unknown signal intercepted.</div>
+          <div style={{ color: warningBlink ? "#1e50b4" : "#0a2a6e", fontFamily: "monospace", fontSize: "12px", letterSpacing: "0.1em", transition: "color 0.05s" }}>Origin: REN KITAGAWA</div>
         </div>
       )}
       {showBrand && (
