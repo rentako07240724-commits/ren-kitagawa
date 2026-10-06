@@ -160,7 +160,7 @@ export default async function ProductPage({
         )}
 
         {/* Size selector + ORDER */}
-        <SizeSelector priceId={product.priceId} sizes={product.sizes} orderNote={product.orderNote} productName={product.name} productPrice={product.price} />
+        <SizeSelector priceId={product.priceId} sizes={product.sizes} orderNote={product.orderNote} productName={product.name} productPrice={product.price} saleWindowStart={product.saleWindowStart} saleWindowEnd={product.saleWindowEnd} />
 
       </div>
     </main>

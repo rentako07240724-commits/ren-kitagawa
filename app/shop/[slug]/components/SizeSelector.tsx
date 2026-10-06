@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const DEFAULT_ORDER_NOTE = "受注生産のため、発送まで1〜2週間ほどお時間をいただきます。";
 
@@ -10,9 +10,11 @@ type Props = {
   orderNote?: string;
   productName: string;
   productPrice: number;
+  saleWindowStart?: string;
+  saleWindowEnd?: string;
 };
 
-export default function SizeSelector({ priceId, sizes, orderNote, productName, productPrice }: Props) {
+export default function SizeSelector({ priceId, sizes, orderNote, productName, productPrice, saleWindowStart, saleWindowEnd }: Props) {
   const isOneSize = sizes.length === 1 && sizes[0] === "ONE SIZE";
 
   // ONE SIZE は自動選択
@@ -20,6 +22,25 @@ export default function SizeSelector({ priceId, sizes, orderNote, productName, p
     isOneSize ? "ONE SIZE" : null
   );
   const [loading, setLoading] = useState(false);
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setNow(new Date());
+  }, []);
+
+  // 販売ウィンドウチェック（JST基準で UTC文字列を比較）
+  let orderAllowed = true;
+  let showPreSaleNote = false;
+  if (saleWindowStart && saleWindowEnd && now) {
+    const start = new Date(saleWindowStart);
+    const end   = new Date(saleWindowEnd);
+    if (now < start) {
+      orderAllowed = false;
+      showPreSaleNote = true;
+    } else if (now >= end) {
+      orderAllowed = false;
+    }
+  }
 
   const handleOrder = async () => {
     if (!selectedSize) return;
@@ -90,11 +111,17 @@ export default function SizeSelector({ priceId, sizes, orderNote, productName, p
       {/* ORDER — full width */}
       <button
         onClick={handleOrder}
-        disabled={!selectedSize || loading}
+        disabled={!selectedSize || loading || !orderAllowed}
         className="w-full font-body font-light text-[8px] tracking-[0.5em] text-white uppercase bg-black border-[0.5px] border-white py-4 hover:bg-white hover:text-black transition-colors duration-300 disabled:opacity-25 disabled:cursor-not-allowed"
       >
         {loading ? "..." : "ORDER"}
       </button>
+
+      {showPreSaleNote && (
+        <p className="font-body font-light text-[8px] tracking-[0.4em] text-white/40 uppercase text-center -mt-3">
+          10.15 — ONLINE ORDER
+        </p>
+      )}
 
     </div>
   );

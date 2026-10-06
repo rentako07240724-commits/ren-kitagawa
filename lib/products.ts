@@ -16,6 +16,8 @@ export type Product = {
   sizeGuide: SizeGuideRow[];
   ageingSample?: boolean;  // true → 9.jpg 以降に "AGEING SAMPLE" を表示
   orderNote?: string;      // ORDERボタン上の注意書き（省略時はデフォルト文言）
+  saleWindowStart?: string; // ISO UTC — この日時から注文可能
+  saleWindowEnd?: string;   // ISO UTC — この日時以降は注文不可
 };
 
 export const products: Product[] = [
@@ -24,6 +26,8 @@ export const products: Product[] = [
     name: "Coated Frame Jeans",
     price: 30000,
     priceId: "price_1UNXwc04FSXNU1UEcK2vrLEP",
+    saleWindowStart: "2026-10-14T15:00:00Z",
+    saleWindowEnd:   "2026-10-15T15:00:00Z",
     descriptionJa:
       "デニム本来の柔らかさを残しながら、レザーのような鈍い光沢を持たせる特殊なコーティング加工を施したFRAME JEANSのCOATED EDITION。光を受けた時の見え方、生地の表情そのものが変わる。着用を重ねても光沢は失われず、時間とともにコーティング特有の質感がさらに深まっていく。ワイドシルエット、ダブルニー構造、大きめのポケット、リベットを使ったディテール。通常モデルの構造はそのままに、加工によって全く異なる表情を持つ一本。",
     descriptionEn:
@@ -41,6 +45,8 @@ export const products: Product[] = [
     name: "Coated Flow Jeans",
     price: 30000,
     priceId: "price_1UNXxB04FSXNU1UEavxr9QgI",
+    saleWindowStart: "2026-10-14T15:00:00Z",
+    saleWindowEnd:   "2026-10-15T15:00:00Z",
     descriptionJa:
       "流れる切替線と、裾に向かって広がるフレアシルエットを持つFLOW JEANSのCOATED EDITION。デニムの柔らかさを残したまま、特殊なコーティングによってレザーのような光沢が生まれる。光の入り方が変わり、動くたびに異なる表情を見せる。着用を重ねても光沢は失われず、時間とともに質感はさらに深くなる。またCOATED EDITIONでは、通常のFLOW JEANSからリベットの位置・配置を再構成。コーティングだけでなく、ディテールもこのエディション専用の仕様となっている。",
     descriptionEn:
